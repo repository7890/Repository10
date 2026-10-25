@@ -1,0 +1,398 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'Nunito', sans-serif; 
+    margin: 0;
+    padding: 0;
+    background-color: #ededed;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(233, 233, 233, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+
+.carga-contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 36px; 
+    height: 64px; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.barra {
+    width: 8px;
+    background-color: #707070;
+    animation: animacionCarga 1s infinite;
+    animation-timing-function: ease-in-out;
+    margin: 0 0.5px; 
+}
+
+.barra:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.barra:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.barra:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.barra:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.barra:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+@keyframes animacionCarga {
+    0%, 100% {
+        height: 17px; 
+    }
+    30% {
+        height: 45px; 
+    }
+    60% {
+        height: 17px; 
+    }
+    90% {
+        height: 17px; 
+    }
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.login-box {
+    background-color: #ffffff;
+    padding: 38px 40px; 
+    border-radius: 5px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+    width: 175px; 
+    max-width: 90%;
+    position: relative;
+    top: -6.6%;
+}
+
+.login-logo {
+    width: 220px; 
+    margin-bottom: 21px;
+    margin-left: -23.7px;
+    position: relative;
+    top: -8px;
+}
+
+.input-field {
+    margin-bottom: 43px; 
+}
+
+.input-field input {
+    width: 113.5%; 
+    padding: 19px; 
+    border: none; 
+    border-bottom: 1px solid #8e8e8e;
+    border-radius: 4.5px 4.5px 0 0; 
+    font-size: 16.5px; 
+    box-sizing: border-box;
+    background-color: #f5f5f5; 
+    color: #626262;
+    font-family: 'Nunito', sans-serif; 
+    margin-left: -11.6px;
+    position: relative;
+    top: -6.8px;
+    caret-color: #bb1b47;
+}
+
+.input-field input::placeholder {
+    color: #626262;
+    padding-left: 5.5px;
+    text-indent: -5.5px;
+}
+
+.login-button {
+    background-color: #0068b1; 
+    color: #ffffff;
+    border: none;
+    padding: 13.6px;
+    border-radius: 2.1px;
+    width: 56.6%;
+    font-size: 14px; 
+    cursor: pointer; 
+    margin-bottom: 22px; 
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+    top: -7px;
+}
+
+.login-button:hover {
+    background-color: #626262; 
+}
+
+.login-help {
+    text-align: center;
+    font-size: 14.1px; 
+    color: #707070;
+    font-weight: 700; 
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+    top: -9px;
+    margin-bottom: 4.6px;
+}
+
+.login-help p {
+    margin: 0; 
+    font-size: 14.1px; 
+    color: #707070; 
+    font-weight: 700; 
+    line-height: 1.5; 
+}
+
+.login-help a {
+    color: #707070; 
+    font-weight: 700; 
+    text-decoration: none; 
+    font-size: 14.1px;
+}
+
+.login-help a:hover {
+    text-decoration: underline; 
+}
+
+.single-line {
+    white-space: nowrap;
+    position: relative;
+    left: -8.6px;
+    font-weight: 700;
+
+}
+
+.bold-text {
+    font-weight: 700;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Nunito', sans-serif; 
+}
+
+.password-modal {
+    width: 295px;
+    height: 320px;
+    padding: 0px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 1000px rgba(0, 0, 0, 0.4);
+    border-radius: 2px; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+}
+
+.auth-modal {
+    width: 250px; 
+    height: 320px;
+    padding: 20px;
+    background-color: #ffffff; 
+    box-shadow: 0 4px 1000px rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hidden {
+    display: none;
+}
+
+.modal p {
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.modal input {
+    width: 100%;
+    margin: 0 0 15px 0;
+
+    font-family: 'Nunito', sans-serif; 
+}
+
+.modal button {
+    width: 40%; /* Tamaño reducido */
+    margin: 0 auto 10px auto; /* Centrará el botón */
+    font-family: 'Nunito', sans-serif;
+    display: block; /* Asegura que el botón ocupe toda la línea y se centre */
+    padding: 9.4px 0;
+}
+
+.input-field input:focus::placeholder {
+    color: #bb1b47; /* Cambia el color del texto a rojo */
+}
+
+.input-field input:focus {
+    border-bottom: 2px solid #bb1b47; /* Cambia el color de la línea inferior a rojo */
+    outline: none; /* Elimina el borde azul predeterminado al hacer foco */
+}
+
+.login-button.active {
+    background-color: #0068b1; /* Azul */
+    color: #ffffff;
+}
+.login-button:disabled {
+    background-color: #e0e0e0;
+    color: #a6a6a6;
+}
+
+#continuarBtn {
+    width: 45%;
+}
+
+#cancelarBtn {
+    width: 40%;
+    padding: 9px
+}
+
+.auth-buttons {
+    display: flex; /* Habilita flexbox para este contenedor */
+    flex-direction: row; /* Alinea los botones horizontalmente */
+    justify-content: center; /* Opcional: centra los botones en el contenedor */
+    margin-bottom: 15px; /* Espacio entre los botones */
+}
+
+.auth-buttons button:first-child {
+    margin-right: 4px; /* Ajusta el valor según lo que necesites */
+}
+
+.auth-buttons button:last-child {
+    margin-left: 4px; /* Ajusta el valor según lo que necesites */
+}
+
+
+.ver-contrasena-btn {
+    position: absolute;
+    right: 16px; 
+    top: 68%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.ver-contrasena-btn img {
+    width: 32px; /* Ajusta el tamaño de la imagen */
+    height: 32px;
+}
+.password-modal .input-field input {
+    padding-bottom: 25.1px;
+    width: 210px;
+}
+.password-modal p {
+    color: #0068b1; /* Cambia el color del texto a azul */
+    position: relative;
+    top: 5.5px;
+    font-size: 16.5px;
+    font-weight: 700;
+}
+
+.password-modal #password::placeholder {
+    color: #bb1b47; /* Cambia el color del placeholder a rojo */
+}
+
+.password-modal .input-field input {
+    border-bottom: 2px solid #bb1b47; /* Cambia el color de la línea inferior a rojo */
+}
+
+#password {
+    position: relative;
+    top: 15px;
+}
+
+/* Mueve ambos botones juntos */
+#continuarBtn,
+#cancelarBtn {
+    position: relative; /* O absolute, según el contexto */
+    top: 10px;
+}
+
+.auth-modal p {
+    color: #0068b1; /* Cambia el color del texto "Introduzca el token recibido por SMS" */
+    font-size: 15.5px; /* Cambia el tamaño de la fuente */
+    text-align: center; /* Centra el texto */
+    margin-bottom: 15px; /* Espacio debajo del texto */
+    font-weight: 700;
+    position: relative;
+    top: 12px;
+}
+#auth-title {
+    color: #0068b1; /* Cambia el color de la palabra "Autenticación" */
+    font-size: 20px; /* Cambia el tamaño de la fuente de "Autenticación" */
+    text-align: center; /* Centra el texto */
+    margin-bottom: 10px; /* Espacio debajo del título */
+    font-weight: 700;
+    position: relative;
+    top: -8px;
+}
+
+
+.auth-modal .input-field input {
+    width: 217px;
+    position: relative;
+    top: 22px;
+}
+
+.auth-modal #authCode::placeholder {
+ font-size: 16px;
+ color: #626262
+ position: relative;
+ top: 21.5px;
+
+}
+
+#authBtn {
+    position: relative; /* O absolute, según el contexto */
+    top: 0px;
+    width: 43.5%;
+}
+#cancelarAuthBtn {
+    width: 41%;
+    padding: -10px;
+    position: relative; /* O absolute, según el contexto */
+    top: 0px;
+}
+
+.auth-modal #authCode::placeholder {
+    color: #bb1b47; /* Cambia el color del placeholder a rojo */
+}
+
+.auth-modal .input-field input {
+    border-bottom: 2px solid #bb1b47; /* Cambia el color de la línea inferior a rojo */
+}

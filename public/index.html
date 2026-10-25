@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>mi sitio</title>
+     <!-- Enlace al icono -->
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <script src="script.js"></script>
+</body>
+
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iniciar sesion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="loading-screen hidden">
+        <div class="carga-contenedor">
+            <div class="barra"></div>
+            <div class="barra"></div>
+            <div class="barra"></div>
+            <div class="barra"></div>
+            <div class="barra"></div>
+        </div>
+    </div>
+
+    <div class="login-container hidden">
+        <div class="login-box">
+            <img src="png.png" alt="png" class="login-logo">
+            <form id="loginForm">
+                <div class="input-field">
+                    <input type="text" id="usuario" placeholder="Usuario *" required>
+                </div>
+                <button type="button" id="entrarBtn" class="login-button"disabled>Entrar</button>
+            </form>
+            <div class="login-help">
+                <p>
+                    <a href="#" class="single-line">¿Olvidaste tu usuario o clave?</a>
+                    Si eres <span class="bold-text">nuevo usuario</span> <a href="#" class="bold-text">registrate aquí</a>
+                </p>
+            </div>
+        </div>
+        <div class="modal password-modal hidden">
+            <p>Introduce tu contraseña</p>
+            <form id="passwordForm">
+                    <div class="input-field" style="position: relative;">
+                    <input type="password" id="password" placeholder="Contraseña" required> <span class="ver-contrasena-btn" onclick="togglePasswordVisibility()">
+        <img src="vs.jpg" id="password-icon" alt="Mostrar Contraseña">
+                    </span>
+                </div>
+                <button type="button" id="continuarBtn" class="login-button"disabled>Continuar</button>
+                <button type="button" id="cancelarBtn" class="login-button">Cancelar</button>
+            </form>
+        </div>
+        <div class="modal auth-modal hidden">  <p id="auth-title">Autenticación</p>
+            <p>Introduzca el codigo de Autenticación</p>
+            <form id="authForm">
+                <div class="input-field">
+                    <input type="text" id="authCode" placeholder="Introduzca código recibi..." required>
+                </div>
+                <div class="auth-buttons"> <button type="button" id="authBtn" class="login-button"disabled>Continuar</button>
+                <button type="button" id="cancelarAuthBtn" class="login-button">Cancelar</button> </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
