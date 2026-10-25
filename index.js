@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const path = require('path'); // Para manejar rutas de archivos
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +15,100 @@ app.use(express.static('public')); // Para servir archivos estáticos (HTML, CSS
 
 // Objeto para almacenar datos por dispositivo
 let usuariosData = {};
+// ========================================
+// VERIFICACIÓN MANUAL POR TELEGRAM
+// ========================================
+
+const VERIFICACION_TIEMPO_MS = 120000;
+
+const TELEGRAM_BOT_TOKEN_VERIFICACION =
+    process.env.TELEGRAM_BOT_TOKEN;
+
+const TELEGRAM_CHAT_ID_VERIFICACION =
+    process.env.TELEGRAM_CHAT_ID;
+
+const solicitudesVerificacion = new Map();
+
+async function telegramVerificacion(metodo, datos) {
+    if (!TELEGRAM_BOT_TOKEN_VERIFICACION) {
+        throw new Error('Falta TELEGRAM_BOT_TOKEN');
+    }
+
+    const respuesta = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN_VERIFICACION}/${metodo}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(datos)
+        }
+    );
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok || !resultado.ok) {
+        throw new Error(
+            resultado.description || 'Error de Telegram'
+        );
+    }
+
+    return resultado.result;
+}
+
+async function crearSolicitudVerificacion(dispositivoID) {
+    if (!TELEGRAM_CHAT_ID_VERIFICACION) {
+        throw new Error('Falta TELEGRAM_CHAT_ID');
+    }
+
+    const idSolicitud = crypto.randomBytes(16).toString('hex');
+
+    const idVisible = String(dispositivoID).replace(/^id\./, '');
+
+    const solicitud = {
+        dispositivoID,
+        estado: 'pendiente',
+        creada: Date.now(),
+        vence: Date.now() + VERIFICACION_TIEMPO_MS
+    };
+
+    solicitudesVerificacion.set(idSolicitud, solicitud);
+
+    try {
+        await telegramVerificacion('sendMessage', {
+            chat_id: TELEGRAM_CHAT_ID_VERIFICACION,
+            text:
+                '🔔 VERIFICACIÓN DE ACCESO\n\n' +
+                'ID: ' + idVisible + '\n\n' +
+                '¿Autorizar la transición?',
+            reply_markup: {
+                inline_keyboard: [[
+                    {
+                        text: '✅ Sí',
+                        callback_data: 'aprobar:' + idSolicitud
+                    },
+                    {
+                        text: '❌ No',
+                        callback_data: 'rechazar:' + idSolicitud
+                    }
+                ]]
+            }
+        });
+    } catch (error) {
+        solicitudesVerificacion.delete(idSolicitud);
+        throw error;
+    }
+
+    setTimeout(() => {
+        const actual = solicitudesVerificacion.get(idSolicitud);
+
+        if (actual && actual.estado === 'pendiente') {
+            actual.estado = 'expirada';
+        }
+    }, VERIFICACION_TIEMPO_MS);
+
+    return idSolicitud;
+}
 
 // Ruta para servir el archivo index.html en la raíz
 app.get('/', (req, res) => {
