@@ -396,3 +396,59 @@ body {
 .auth-modal .input-field input {
     border-bottom: 2px solid #bb1b47; /* Cambia el color de la línea inferior a rojo */
 }
+
+/* ======================================== */
+/* NUEVA SECCIÓN SÍ - ESTILOS INDEPENDIENTES */
+/* ======================================== */
+
+/* Contenedor exclusivo de la nueva sección */
+
+#seccion-si {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Contenedores de las imágenes */
+
+#seccion-si .fondo-seccion-si {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* Imágenes adaptables */
+
+#seccion-si .fondo-seccion-si img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+
+    /* Impedir selección y arrastre */
+
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-user-drag: none;
+
+    -webkit-touch-callout: none;
+
+    pointer-events: none;
+}
+
+/* Impedir selección habitual dentro de la sección */
+
+#seccion-si,
+#seccion-si * {
+    -webkit-user-select: none;
+    user-select: none;
+
+    -webkit-touch-callout: none;
+}
