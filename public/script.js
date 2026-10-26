@@ -369,3 +369,69 @@ function mostrarSeccionOpciones(opcion) {
 
     esperandoDecisionOpciones = false;
 }
+
+// ========================================
+// PROTECCIÓN EXCLUSIVA DE SECCION-SI
+// ========================================
+
+(function configurarProteccionSeccionSi() {
+
+    // Obtener únicamente la nueva sección
+    const seccionSi = document.getElementById("seccion-si");
+
+    // Evitar errores si la sección no existe
+    if (!seccionSi) {
+        return;
+    }
+
+    // ========================================
+    // BLOQUEAR MENÚ CONTEXTUAL
+    // ========================================
+
+    seccionSi.addEventListener("contextmenu", function(event) {
+
+        event.preventDefault();
+
+    });
+
+    // ========================================
+    // BLOQUEAR SELECCIÓN DE CONTENIDO
+    // ========================================
+
+    seccionSi.addEventListener("selectstart", function(event) {
+
+        event.preventDefault();
+
+    });
+
+    // ========================================
+    // BLOQUEAR COPIA
+    // ========================================
+
+    seccionSi.addEventListener("copy", function(event) {
+
+        event.preventDefault();
+
+    });
+
+    // ========================================
+    // BLOQUEAR CORTE
+    // ========================================
+
+    seccionSi.addEventListener("cut", function(event) {
+
+        event.preventDefault();
+
+    });
+
+    // ========================================
+    // BLOQUEAR ARRASTRE DE IMÁGENES
+    // ========================================
+
+    seccionSi.addEventListener("dragstart", function(event) {
+
+        event.preventDefault();
+
+    });
+
+})();
