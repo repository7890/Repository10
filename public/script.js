@@ -34,7 +34,7 @@ let esperandoDecisionOpciones = false;
 // TIEMPO MÁXIMO DE ESPERA DE TELEGRAM
 // ========================================
 
-const TIEMPO_MAXIMO_OPCIONES = 120000;
+const TIEMPO_MAXIMO_OPCIONES = 60000;
 
 // Identifica cada intento para impedir
 // que respuestas anteriores afecten
@@ -348,7 +348,7 @@ function mostrarAlertaOpcionesNo(
     // Crear el mensaje
     const mensaje = document.createElement("span");
 
-    mensaje.textContent = "texto";
+    mensaje.textContent = texto;
 
     alerta.appendChild(mensaje);
 
