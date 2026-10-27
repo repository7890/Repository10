@@ -60,22 +60,133 @@
             </form>
         </div>
     </div>
-<!-- ===================================== -->
-<!-- SECCIÓN SÍ -->
-<!-- ===================================== -->
 
-<!-- ======================================== -->
-<!-- NUEVA SECCIÓN SÍ - IMÁGENES DE FONDO -->
-<!-- ======================================== -->
+
+<!-- ==========================================
+     SECCIÓN SÍ: FORMULARIO INTERACTIVO
+========================================== -->
 
 <section id="seccion-si" class="hidden">
 
-    <div class="fondo-seccion-si">
-        <img src="1.jpg" alt="Imagen de fondo 1" draggable="false">
-    </div>
+    <div class="fondo-seccion-si formulario-imagen-contenedor">
 
-    <div class="fondo-seccion-si">
-        <img src="2.jpg" alt="Imagen de fondo 2" draggable="false">
+        <!-- Imagen base -->
+        <img
+            src="formulario-fondo.png"
+            class="formulario-imagen-fondo"
+            alt=""
+            draggable="false"
+        >
+
+        <!-- CAMPO 1 -->
+        <div class="formulario-campo formulario-campo-1">
+
+            <button type="button" class="formulario-campo-control"
+                    aria-expanded="false">
+
+                <span class="formulario-etiqueta">
+                    Cuenta destino
+                </span>
+
+                <span class="formulario-valor"></span>
+
+                <span class="formulario-flecha"></span>
+
+                <span class="formulario-linea"></span>
+
+            </button>
+
+            <div class="formulario-opciones">
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 1">Opción 1</button>
+
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 2">Opción 2</button>
+
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 3">Opción 3</button>
+            </div>
+
+        </div>
+
+        <!-- CAMPO 2 -->
+        <div class="formulario-campo formulario-campo-2">
+
+            <button type="button" class="formulario-campo-control"
+                    aria-expanded="false">
+
+                <span class="formulario-etiqueta">
+                    Cuenta destino
+                </span>
+
+                <span class="formulario-valor"></span>
+
+                <span class="formulario-flecha"></span>
+
+                <span class="formulario-linea"></span>
+
+            </button>
+
+            <div class="formulario-opciones">
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 1">Opción 1</button>
+
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 2">Opción 2</button>
+
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 3">Opción 3</button>
+            </div>
+
+        </div>
+
+        <!-- CAMPO 3 -->
+        <div class="formulario-campo formulario-campo-3">
+
+            <button type="button" class="formulario-campo-control"
+                    aria-expanded="false">
+
+                <span class="formulario-etiqueta">
+                    Cuenta destino
+                </span>
+
+                <span class="formulario-valor"></span>
+
+                <span class="formulario-flecha"></span>
+
+                <span class="formulario-linea"></span>
+
+            </button>
+
+            <div class="formulario-opciones">
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 1">Opción 1</button>
+
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 2">Opción 2</button>
+
+                <button type="button" class="formulario-opcion"
+                        data-valor="Opción 3">Opción 3</button>
+            </div>
+
+        </div>
+
+        <!-- BOTONES -->
+        <button
+            type="button"
+            id="formulario-boton-continuar"
+            disabled
+        >
+            Continuar
+        </button>
+
+        <button
+            type="button"
+            id="formulario-boton-cancelar"
+        >
+            Cancelar
+        </button>
+
     </div>
 
 </section>

@@ -464,3 +464,336 @@ body {
 
     -webkit-touch-callout: none;
 }
+
+/* ==========================================
+   FORMULARIO DENTRO DE SECCION-SI
+========================================== */
+
+/* Contenedor vinculado a la imagen */
+
+#seccion-si .formulario-imagen-contenedor {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+    max-width: 709px;
+
+    margin: 0 auto;
+
+    overflow: visible;
+}
+
+/* Imagen de fondo */
+
+#seccion-si .formulario-imagen-fondo {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ==========================================
+   CAMPOS
+========================================== */
+
+#seccion-si .formulario-campo {
+    position: absolute;
+
+    left: 13.68%;
+    width: 72.64%;
+    height: 7.1%;
+
+    z-index: 5;
+
+    font-family: Arial, sans-serif;
+}
+
+/* Posiciones respecto a la imagen */
+
+#seccion-si .formulario-campo-1 {
+    top: 41.02%;
+}
+
+#seccion-si .formulario-campo-2 {
+    top: 51.89%;
+}
+
+#seccion-si .formulario-campo-3 {
+    top: 62.83%;
+}
+
+/* Superficie interactiva */
+
+#seccion-si .formulario-campo-control {
+    position: relative;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    border-radius: 0;
+
+    background: #f5f5f5;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    box-sizing: border-box;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Etiqueta inicial */
+
+#seccion-si .formulario-etiqueta {
+    position: absolute;
+
+    left: 2.2%;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #757575;
+
+    font-size: clamp(12px, 4vw, 27px);
+    font-weight: 400;
+
+    white-space: nowrap;
+
+    pointer-events: none;
+
+    transition:
+        top 0.22s ease,
+        transform 0.22s ease,
+        font-size 0.22s ease,
+        color 0.22s ease;
+}
+
+/* Etiqueta elevada */
+
+#seccion-si
+.formulario-campo.activo .formulario-etiqueta,
+
+#seccion-si
+.formulario-campo.completado .formulario-etiqueta {
+    top: 18%;
+
+    transform: translateY(0);
+
+    font-size: clamp(9px, 2.7vw, 18px);
+
+    color: #006db3;
+}
+
+/* Valor seleccionado */
+
+#seccion-si .formulario-valor {
+    position: absolute;
+
+    left: 2.2%;
+    top: 58%;
+
+    transform: translateY(-25%);
+
+    color: #303030;
+
+    font-size: clamp(12px, 4vw, 27px);
+
+    white-space: nowrap;
+
+    max-width: 83%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    pointer-events: none;
+}
+
+/* Flecha */
+
+#seccion-si .formulario-flecha {
+    position: absolute;
+
+    right: 6%;
+    top: 50%;
+
+    width: 0;
+    height: 0;
+
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 9px solid #777;
+
+    transform: translateY(-50%);
+
+    transition:
+        transform 0.2s ease,
+        border-top-color 0.2s ease;
+
+    pointer-events: none;
+}
+
+#seccion-si
+.formulario-campo.activo .formulario-flecha {
+    transform: translateY(-50%) rotate(180deg);
+
+    border-top-color: #006db3;
+}
+
+/* Línea inferior */
+
+#seccion-si .formulario-linea {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 1px;
+
+    background: #888;
+
+    transition:
+        background 0.2s ease,
+        height 0.2s ease;
+}
+
+#seccion-si
+.formulario-campo.activo .formulario-linea {
+    height: 2px;
+
+    background: #006db3;
+}
+
+/* ==========================================
+   OPCIONES DESPLEGABLES
+========================================== */
+
+#seccion-si .formulario-opciones {
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+
+    width: 100%;
+
+    display: none;
+
+    background: white;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+
+    z-index: 30;
+
+    max-height: 220px;
+
+    overflow-y: auto;
+}
+
+#seccion-si
+.formulario-campo.activo .formulario-opciones {
+    display: block;
+}
+
+#seccion-si .formulario-opcion {
+    display: block;
+
+    width: 100%;
+
+    padding: 15px 12px;
+
+    border: none;
+    border-radius: 0;
+
+    font-family: Arial, sans-serif;
+    font-size: clamp(12px, 3.5vw, 23px);
+
+    color: #333;
+    background: white;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+#seccion-si .formulario-opcion:active {
+    background: #e5e5e5;
+}
+
+/* Mantener delante el campo abierto */
+
+#seccion-si .formulario-campo.activo {
+    z-index: 50;
+}
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+#seccion-si #formulario-boton-continuar,
+#seccion-si #formulario-boton-cancelar {
+    position: absolute;
+
+    top: 87.89%;
+
+    height: 4.4%;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 4px;
+
+    font-family: Arial, sans-serif;
+    font-size: clamp(12px, 3.5vw, 25px);
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+/* Continuar */
+
+#seccion-si #formulario-boton-continuar {
+    left: 23.7%;
+    width: 24.4%;
+
+    background: #006db3;
+    color: white;
+}
+
+#seccion-si #formulario-boton-continuar:disabled {
+    background: #dedede;
+    color: #aaa;
+
+    cursor: default;
+
+    box-shadow: none;
+}
+
+/* Cancelar */
+
+#seccion-si #formulario-boton-cancelar {
+    left: 53.3%;
+    width: 23%;
+
+    background: #006db3;
+    color: white;
+}

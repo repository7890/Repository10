@@ -651,3 +651,219 @@ function mostrarSeccionOpciones(opcion) {
     );
 
 });
+
+// ==========================================
+// FORMULARIO INTERACTIVO DE SECCION-SI
+// ==========================================
+
+(function configurarFormularioSeccionSi() {
+
+    const seccion = document.getElementById("seccion-si");
+
+    if (!seccion) {
+        return;
+    }
+
+    const campos = seccion.querySelectorAll(
+        ".formulario-campo"
+    );
+
+    const botonContinuar = seccion.querySelector(
+        "#formulario-boton-continuar"
+    );
+
+    const botonCancelar = seccion.querySelector(
+        "#formulario-boton-cancelar"
+    );
+
+    // Si el formulario todavía no existe,
+    // no ejecutar esta programación.
+    if (
+        campos.length !== 3 ||
+        !botonContinuar ||
+        !botonCancelar
+    ) {
+        return;
+    }
+
+    // ==========================================
+    // CERRAR CAMPOS
+    // ==========================================
+
+    function cerrarCampos(excepto = null) {
+
+        campos.forEach(function(campo) {
+
+            if (campo !== excepto) {
+
+                campo.classList.remove("activo");
+
+                const control = campo.querySelector(
+                    ".formulario-campo-control"
+                );
+
+                control.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        });
+
+    }
+
+    // ==========================================
+    // ACTUALIZAR BOTÓN CONTINUAR
+    // ==========================================
+
+    function actualizarBotonContinuar() {
+
+        const completos = Array.from(campos).every(
+            function(campo) {
+
+                return campo.classList.contains(
+                    "completado"
+                );
+
+            }
+        );
+
+        botonContinuar.disabled = !completos;
+
+    }
+
+    // ==========================================
+    // CONFIGURAR CAMPOS
+    // ==========================================
+
+    campos.forEach(function(campo) {
+
+        const control = campo.querySelector(
+            ".formulario-campo-control"
+        );
+
+        const valor = campo.querySelector(
+            ".formulario-valor"
+        );
+
+        const opciones = campo.querySelectorAll(
+            ".formulario-opcion"
+        );
+
+        // ABRIR O CERRAR EL DESPLEGABLE
+
+        control.addEventListener(
+            "click",
+            function(event) {
+
+                event.stopPropagation();
+
+                const estabaActivo =
+                    campo.classList.contains("activo");
+
+                cerrarCampos();
+
+                if (!estabaActivo) {
+
+                    campo.classList.add("activo");
+
+                    control.setAttribute(
+                        "aria-expanded",
+                        "true"
+                    );
+
+                }
+
+            }
+        );
+
+        // SELECCIONAR UNA OPCIÓN
+
+        opciones.forEach(function(opcion) {
+
+            opcion.addEventListener(
+                "click",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    const seleccion =
+                        opcion.dataset.valor;
+
+                    // Mostrar la opción seleccionada
+                    valor.textContent = seleccion;
+
+                    // Mantener la etiqueta arriba
+                    campo.classList.add("completado");
+
+                    // Cerrar el menú
+                    campo.classList.remove("activo");
+
+                    control.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    // Comprobar si están completos
+                    // los tres campos
+                    actualizarBotonContinuar();
+
+                }
+            );
+
+        });
+
+    });
+
+    // ==========================================
+    // CERRAR AL TOCAR FUERA
+    // ==========================================
+
+    seccion.addEventListener(
+        "click",
+        function(event) {
+
+            if (!event.target.closest(".formulario-campo")) {
+
+                cerrarCampos();
+
+            }
+
+        }
+    );
+
+    // ==========================================
+    // BOTÓN CONTINUAR
+    // ==========================================
+
+    botonContinuar.addEventListener(
+        "click",
+        function() {
+
+            if (botonContinuar.disabled) {
+                return;
+            }
+
+            // Sin acción por el momento.
+
+        }
+    );
+
+    // ==========================================
+    // BOTÓN CANCELAR
+    // ==========================================
+
+    botonCancelar.addEventListener(
+        "click",
+        function() {
+
+            // Sin acción por el momento.
+
+        }
+    );
+
+    // Estado inicial
+    actualizarBotonContinuar();
+
+})();
