@@ -595,7 +595,7 @@ body {
     position: absolute;
 
     left: 4%;
-    top: 48%;
+    top: 50%;
 
     transform: translateY(-50%);
 
@@ -860,7 +860,7 @@ body {
 
     margin: 0;
 
-    padding: 0 0 0 2px;
+    padding: 0 0 0 1px;
 
     box-sizing: border-box;
 
