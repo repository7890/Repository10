@@ -847,27 +847,29 @@ body {
    "SELECCIONE"
 ========================================== */
 
+/* ==========================================
+   TÍTULO "SELECCIONE"
+   AJUSTADO A LA REFERENCIA
+========================================== */
+
 #seccion-si .formulario-opciones-titulo {
 
     display: flex;
 
-    align-items: center;
+    align-items: flex-end;
 
     width: 100%;
 
-    min-height: 32px;
-
-    padding: 0 0 0 12px;
+    height: 27px;
+    min-height: 0;
 
     margin: 0;
 
+    padding: 0 0 2px 0;
+
     box-sizing: border-box;
 
-    /* Mismo color del placeholder */
-
     color: #626262;
-
-    /* Misma tipografía del sitio */
 
     font-family: 'Nunito', sans-serif;
 
@@ -877,19 +879,14 @@ body {
 
     line-height: 1.2;
 
-    /* Mantener el fondo actual del menú */
-
     background: transparent;
-
-    /* El título no es seleccionable */
 
     pointer-events: none;
 
     user-select: none;
-
     -webkit-user-select: none;
-
 }
+
 /* ==========================================
    OPCIONES DEL MENÚ
 ========================================== */
