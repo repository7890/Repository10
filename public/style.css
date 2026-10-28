@@ -843,11 +843,6 @@ body {
 }
 
 /* ==========================================
-   TÍTULO SUPERIOR DEL MENÚ
-   "SELECCIONE"
-========================================== */
-
-/* ==========================================
    TÍTULO "SELECCIONE"
    AJUSTADO A LA REFERENCIA
 ========================================== */
@@ -860,12 +855,12 @@ body {
 
     width: 100%;
 
-    height: 30px;
+    height: 27px;
     min-height: 0;
 
     margin: 0;
 
-    padding: 0 0 1px 4px;
+    padding: 0 0 0 4px;
 
     box-sizing: border-box;
 
