@@ -758,6 +758,7 @@ body {
 
 /* ==========================================
    VENTANA DE OPCIONES
+   ANIMACIÓN DE APERTURA Y SOMBRA
 ========================================== */
 
 #seccion-si .formulario-opciones {
@@ -768,7 +769,7 @@ body {
 
     width: 100%;
 
-    display: none;
+    display: block;
 
     margin: 0;
     padding: 5px 0;
@@ -780,9 +781,6 @@ body {
 
     box-sizing: border-box;
 
-    box-shadow:
-        0 5px 14px rgba(0, 0, 0, 0.24);
-
     z-index: 30;
 
     max-height: 220px;
@@ -792,16 +790,56 @@ body {
     overscroll-behavior: contain;
 
     -webkit-overflow-scrolling: touch;
+
+    /* Estado inicial: ventana cerrada */
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transform: scaleY(0);
+
+    transform-origin: top center;
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 0 rgba(0, 0, 0, 0);
+
+    /* Animación */
+
+    transition:
+        transform 200ms ease-out,
+        opacity 200ms ease-out,
+        box-shadow 200ms ease-out,
+        visibility 0s linear 200ms;
 }
 
 
 /* ==========================================
-   MOSTRAR VENTANA AL ACTIVAR CAMPO
+   VENTANA ABIERTA
 ========================================== */
 
 #seccion-si
 .formulario-campo.activo .formulario-opciones {
-    display: block;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: scaleY(1);
+
+    pointer-events: auto;
+
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.18),
+        0 10px 20px rgba(0, 0, 0, 0.22);
+
+    transition:
+        transform 200ms ease-out,
+        opacity 200ms ease-out,
+        box-shadow 200ms ease-out,
+        visibility 0s;
 }
 
 
