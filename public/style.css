@@ -594,8 +594,8 @@ body {
 #seccion-si .formulario-etiqueta {
     position: absolute;
 
-    left: 2.2%;
-    top: 50%;
+    left: 4%;
+    top: 48%;
 
     transform: translateY(-50%);
 
@@ -657,7 +657,7 @@ body {
 #seccion-si .formulario-valor {
     position: absolute;
 
-    left: 2.2%;
+    left: 4%;
     top: 58%;
 
     transform: translateY(-25%);
@@ -715,7 +715,7 @@ body {
 
 #seccion-si
 .formulario-campo.activo .formulario-flecha {
-    transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%);
 
     border-top-color: #bb1b47;
 }
@@ -852,7 +852,7 @@ body {
 
 #seccion-si
 .formulario-opcion:active {
-    background: #e0e0e0;
+    background: #b4b5b9;
 
     color: #303030;
 }
@@ -864,7 +864,7 @@ body {
 
 #seccion-si
 .formulario-opcion:focus-visible {
-    background: #e0e0e0;
+    background: #b4b5b9;
 
     outline: 2px solid #bb1b47;
     outline-offset: -2px;
