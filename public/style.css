@@ -1047,3 +1047,186 @@ body {
 
     color: #ffffff;
 }
+
+/* ==========================================
+   NUEVA SECCIÓN INTERMEDIA
+========================================== */
+
+#seccion-intermedia {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    background: #ededed;
+
+    z-index: 100;
+}
+
+#seccion-intermedia.hidden,
+#seccion-intermedia .hidden {
+    display: none;
+}
+
+
+/* ==========================================
+   IMAGEN DE FONDO
+========================================== */
+
+#seccion-intermedia .intermedio-fondo {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* ==========================================
+   VENTANA CENTRAL
+========================================== */
+
+#seccion-intermedia .intermedio-ventana {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 80%;
+    max-width: 709px;
+
+    height: 88%;
+
+    background: #ffffff;
+
+    border-radius: 5px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.18),
+        0 25px 60px rgba(0, 0, 0, 0.25);
+
+    z-index: 5;
+
+    overflow: hidden;
+
+    animation: intermedioAparecer 250ms ease-out both;
+}
+
+
+/* ==========================================
+   ANIMACIÓN DE APARICIÓN
+========================================== */
+
+@keyframes intermedioAparecer {
+
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+}
+
+
+/* ==========================================
+   CONTENEDOR DE LA IMAGEN INTERIOR
+========================================== */
+
+#seccion-intermedia .intermedio-imagen-contenedor {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 82%;
+
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   IMAGEN INTERIOR
+========================================== */
+
+#seccion-intermedia .intermedio-imagen {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* ==========================================
+   BOTÓN CONTINUAR
+========================================== */
+
+#seccion-intermedia #intermedio-boton-continuar {
+    position: absolute;
+
+    left: 50%;
+    bottom: 5.5%;
+
+    transform: translateX(-50%);
+
+    width: 31%;
+    max-width: 220px;
+
+    height: 8%;
+
+    min-height: 40px;
+
+    margin: 0;
+    padding: 0;
+
+    border: none;
+    border-radius: 3px;
+
+    background: #0068b1;
+    color: #ffffff;
+
+    font-family: 'Nunito', sans-serif;
+
+    font-size: clamp(14px, 3.5vw, 24px);
+    font-weight: 400;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.25);
+
+    -webkit-tap-highlight-color: transparent;
+}

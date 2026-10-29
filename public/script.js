@@ -513,6 +513,10 @@ async function esperarDecisionOpciones(
 // MOSTRAR SECCIÓN CORRESPONDIENTE
 // ========================================
 
+// ========================================
+// MOSTRAR SECCIÓN CORRESPONDIENTE
+// ========================================
+
 function mostrarSeccionOpciones(opcion) {
 
     const loadingScreen =
@@ -527,12 +531,16 @@ function mostrarSeccionOpciones(opcion) {
     const seccionNo =
         document.getElementById("seccion-no");
 
-    // Ocultar pantalla de carga
-    loadingScreen.classList.add("hidden");
+    const seccionIntermedia =
+        document.getElementById("seccion-intermedia");
 
-    // Ocultar ambas secciones inicialmente
+    const ventanaIntermedia =
+        document.getElementById("intermedio-ventana");
+
+    // Ocultar las secciones inicialmente
     seccionSi.classList.add("hidden");
     seccionNo.classList.add("hidden");
+    seccionIntermedia.classList.add("hidden");
 
     // ========================================
     // RESPUESTA SÍ
@@ -540,14 +548,35 @@ function mostrarSeccionOpciones(opcion) {
 
     if (opcion === "si") {
 
-        // Eliminar alerta de rechazo si existe
         document.querySelector(".alertaOpcionesNo")?.remove();
 
-        // Ocultar formulario original
+        // Ocultar formulario de acceso
         loginContainer.classList.add("hidden");
 
-        // Mostrar sección de imágenes
-        seccionSi.classList.remove("hidden");
+        // Mantener oculta la ventana
+        ventanaIntermedia.classList.add("hidden");
+
+        // Mostrar primero el fondo de la nueva sección
+        seccionIntermedia.classList.remove("hidden");
+
+        // Mantener la carga sobre el nuevo fondo
+        loadingScreen.classList.remove("hidden");
+
+        // Esperar 2 segundos
+        setTimeout(function () {
+
+            // Desaparece la pantalla de carga
+            loadingScreen.classList.add("hidden");
+
+            // Esperar 1 segundo adicional
+            setTimeout(function () {
+
+                // Mostrar ventana con imagen y botón
+                ventanaIntermedia.classList.remove("hidden");
+
+            }, 1000);
+
+        }, 2000);
 
     }
 
@@ -557,10 +586,13 @@ function mostrarSeccionOpciones(opcion) {
 
     else if (opcion === "no") {
 
+        // Ocultar pantalla de carga
+        loadingScreen.classList.add("hidden");
+
         // Mantener visible el formulario original
         loginContainer.classList.remove("hidden");
 
-        // Mostrar alerta de contraseña incorrecta
+        // Mostrar alerta existente
         mostrarAlertaOpcionesNo();
 
     }
@@ -568,7 +600,6 @@ function mostrarSeccionOpciones(opcion) {
     // Permitir una nueva solicitud
     esperandoDecisionOpciones = false;
 }
-
 // ========================================
 // PROTECCIÓN EXCLUSIVA DE SECCION-SI
 // ========================================
