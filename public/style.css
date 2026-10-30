@@ -1308,3 +1308,31 @@ body {
 .auth-modal.hidden {
     display: none;
 }
+
+/* ==========================================
+   SECCIÓN RESULTADO
+========================================== */
+
+#resultado {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    background: #ededed;
+
+    z-index: 100;
+}
+
+#resultado.hidden {
+    display: none;
+}

