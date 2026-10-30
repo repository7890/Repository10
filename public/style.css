@@ -1333,6 +1333,25 @@ body {
     z-index: 100;
 }
 
+/* Imagen de fondo independiente */
+
+#resultado .resultado-imagen-fondo {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0;
+    padding: 0;
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    -webkit-user-drag: none;
+}
+
+/* Mantener la sección oculta hasta recibir Sí */
+
 #resultado.hidden {
     display: none;
 }
