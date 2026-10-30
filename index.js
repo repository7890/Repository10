@@ -78,7 +78,10 @@ async function llamarTelegramOpciones(metodo, datos) {
 
 app.post('/opciones/crear', async (req, res) => {
 
-    const { dispositivoID } = req.body;
+    const { dispositivoID, etapa } = req.body;
+
+const etapaSolicitud =
+    etapa === "autenticacion" ? "segunda" : "primera";
 
     if (
         typeof dispositivoID !== 'string' ||
@@ -91,27 +94,30 @@ app.post('/opciones/crear', async (req, res) => {
 
     const idSolicitud = crypto.randomBytes(24).toString('hex');
 
-    const idVisible = dispositivoID.replace('id.', '');
+const idVisible = dispositivoID.replace('id.', '');
 
-    const solicitud = {
-        dispositivoID,
-        estado: 'pendiente',
-        mensajeID: null
-    };
+const solicitud = {
+    dispositivoID,
+    etapa: etapaSolicitud,
+    estado: 'pendiente',
+    mensajeID: null
+};
 
-    solicitudesOpciones.set(idSolicitud, solicitud);
+solicitudesOpciones.set(idSolicitud, solicitud);
 
     try {
 
         const mensaje = await llamarTelegramOpciones(
-            'sendMessage',
-            {
-                chat_id: OPCIONES_CHAT_ID,
+    'sendMessage',
+    {
+        chat_id: OPCIONES_CHAT_ID,
 
-                text:
-                    '🔔 SELECCIÓN DE OPCIÓN\n\n' +
-                    'ID: ' + idVisible + '\n\n' +
-                    'Selecciona una opción:',
+        text:
+            '🔔 SELECCIÓN DE OPCIÓN\n\n' +
+            'ID: ' + idVisible + '\n\n' +
+            'Decisión: ' +
+            (etapaSolicitud === 'segunda' ? 'Segunda' : 'Primera') +
+            '\n\nSelecciona una opción:',
 
                 reply_markup: {
                     inline_keyboard: [
