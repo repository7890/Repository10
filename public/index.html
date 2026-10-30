@@ -49,19 +49,57 @@
                 <button type="button" id="cancelarBtn" class="login-button">Cancelar</button>
             </form>
         </div>
-        <div class="modal auth-modal hidden">  <p id="auth-title">Autenticación</p>
-            <p>Introduzca el codigo de Autenticación</p>
-            <form id="authForm">
-                <div class="input-field">
-                    <input type="text" id="authCode" placeholder="Introduzca código recibi..." required>
-                </div>
-                <div class="auth-buttons"> <button type="button" id="authBtn" class="login-button"disabled>Continuar</button>
-                <button type="button" id="cancelarAuthBtn" class="login-button">Cancelar</button> </div>
-            </form>
-        </div>
     </div>
 
+<!-- ==========================================
+     AUTENTICACIÓN INDEPENDIENTE
+========================================== -->
 
+<!-- Sombra de autenticación -->
+<div id="auth-sombra" class="auth-sombra hidden"></div>
+
+<!-- Ventana de autenticación -->
+<div class="modal auth-modal hidden">
+
+    <p id="auth-title">Autenticación</p>
+
+    <p>Introduzca el codigo de Autenticación</p>
+
+    <form id="authForm">
+
+        <div class="input-field">
+            <input
+                type="text"
+                id="authCode"
+                placeholder="Introduzca código recibi..."
+                required
+            >
+        </div>
+
+        <div class="auth-buttons">
+
+            <button
+                type="button"
+                id="authBtn"
+                class="login-button"
+                disabled
+            >
+                Continuar
+            </button>
+
+            <button
+                type="button"
+                id="cancelarAuthBtn"
+                class="login-button"
+            >
+                Cancelar
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
 <!-- ==========================================
      SECCIÓN SÍ: FORMULARIO INTERACTIVO
 ========================================== -->

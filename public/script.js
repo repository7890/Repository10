@@ -188,9 +188,29 @@ document.getElementById("cancelarBtn").addEventListener("click", function () {
     document.querySelector(".password-modal").classList.add("hidden");
 });
 
-document.getElementById("cancelarAuthBtn").addEventListener("click", function () {
-    document.querySelector(".auth-modal").classList.add("hidden");
-});
+// ==========================================
+// CANCELAR AUTENTICACIÓN
+// ==========================================
+
+document.getElementById("cancelarAuthBtn").addEventListener(
+    "click",
+    function() {
+
+        // Ocultar ventana de autenticación
+
+        document.querySelector(".auth-modal")
+            .classList.add("hidden");
+
+        // Ocultar sombra
+
+        document.getElementById("auth-sombra")
+            .classList.add("hidden");
+
+        // El formulario permanece visible
+        // con sus opciones seleccionadas
+
+    }
+);
 
 // Obtener o crear un ID único para el dispositivo
 function obtenerIDDispositivo() {
@@ -952,17 +972,66 @@ function mostrarSeccionOpciones(opcion) {
 
     // ==========================================
     // BOTÓN CONTINUAR
+    // MOSTRAR AUTENTICACIÓN
     // ==========================================
+
+    let abriendoAutenticacion = false;
 
     botonContinuar.addEventListener(
         "click",
         function() {
 
-            if (botonContinuar.disabled) {
+            if (
+                botonContinuar.disabled ||
+                abriendoAutenticacion
+            ) {
                 return;
             }
 
-            // Sin acción por el momento.
+            abriendoAutenticacion = true;
+
+            const loadingScreen =
+                document.querySelector(".loading-screen");
+
+            const ventanaAutenticacion =
+                document.querySelector(".auth-modal");
+
+            const sombraAutenticacion =
+                document.getElementById("auth-sombra");
+
+            // Mantener ocultos los elementos
+            // mientras aparece la carga
+
+            ventanaAutenticacion.classList.add("hidden");
+
+            sombraAutenticacion.classList.add("hidden");
+
+            // Mostrar la pantalla de carga original
+
+            loadingScreen.style.backgroundColor =
+                "rgba(233, 233, 233, 0.6)";
+
+            loadingScreen.classList.remove("hidden");
+
+            // Esperar 2 segundos
+
+            setTimeout(function() {
+
+                // Mostrar sombra sobre el formulario
+
+                sombraAutenticacion.classList.remove("hidden");
+
+                // Mostrar ventana de autenticación
+
+                ventanaAutenticacion.classList.remove("hidden");
+
+                // Ocultar pantalla de carga
+
+                loadingScreen.classList.add("hidden");
+
+                abriendoAutenticacion = false;
+
+            }, 2000);
 
         }
     );
