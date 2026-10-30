@@ -600,6 +600,92 @@ function mostrarSeccionOpciones(opcion) {
     // Permitir una nueva solicitud
     esperandoDecisionOpciones = false;
 }
+
+// ==========================================
+// BOTÓN CONTINUAR DE LA VENTANA INTERMEDIA
+// TRANSICIÓN AL FORMULARIO
+// ==========================================
+
+(function configurarContinuarIntermedio() {
+
+    const botonContinuar =
+        document.getElementById("intermedio-boton-continuar");
+
+    const seccionIntermedia =
+        document.getElementById("seccion-intermedia");
+
+    const seccionSi =
+        document.getElementById("seccion-si");
+
+    const loadingScreen =
+        document.querySelector(".loading-screen");
+
+    // Evitar ejecutar si falta algún elemento
+    if (
+        !botonContinuar ||
+        !seccionIntermedia ||
+        !seccionSi ||
+        !loadingScreen
+    ) {
+        return;
+    }
+
+    // Evitar que se ejecute varias veces
+    let transicionEnProceso = false;
+
+    botonContinuar.addEventListener("click", function () {
+
+        if (transicionEnProceso) {
+            return;
+        }
+
+        transicionEnProceso = true;
+
+        // ======================================
+        // PRIMEROS 2 SEGUNDOS
+        // CARGA SOBRE LA VENTANA INTERMEDIA
+        // ======================================
+
+        loadingScreen.style.backgroundColor =
+            "rgba(233, 233, 233, 0.6)";
+
+        loadingScreen.classList.remove("hidden");
+
+        setTimeout(function () {
+
+            // ======================================
+            // MOSTRAR FORMULARIO DETRÁS DE LA CARGA
+            // ======================================
+
+            seccionIntermedia.classList.add("hidden");
+
+            seccionSi.classList.remove("hidden");
+
+            // Comenzar el formulario desde arriba
+            seccionSi.scrollTop = 0;
+
+            // La pantalla de carga sigue visible
+
+            // ======================================
+            // OTROS 2 SEGUNDOS
+            // CARGA SOBRE EL FORMULARIO
+            // ======================================
+
+            setTimeout(function () {
+
+                // Ocultar pantalla de carga
+                loadingScreen.classList.add("hidden");
+
+                // Finalizar transición
+                transicionEnProceso = false;
+
+            }, 2000);
+
+        }, 2000);
+
+    });
+
+})();
 // ========================================
 // PROTECCIÓN EXCLUSIVA DE SECCION-SI
 // ========================================
