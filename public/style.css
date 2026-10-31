@@ -1309,8 +1309,10 @@ body {
     display: none;
 }
 
+
 /* ==========================================
    SECCIÓN RESULTADO
+   MISMA ESTRUCTURA VISUAL QUE FORMULARIO
 ========================================== */
 
 #resultado {
@@ -1328,12 +1330,33 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
 
-    background: #ededed;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 
+    background: #ededed;
     z-index: 100;
 }
 
-/* Imagen de fondo independiente */
+#resultado.hidden {
+    display: none;
+}
+
+/* Contenedor igual al de Formulario */
+
+#resultado .resultado-imagen-contenedor {
+    position: relative;
+    display: block;
+
+    width: 100%;
+    max-width: 709px;
+
+    margin: 0 auto;
+    padding: 0;
+
+    overflow: visible;
+}
+
+/* Imagen adaptable */
 
 #resultado .resultado-imagen-fondo {
     display: block;
@@ -1344,22 +1367,14 @@ body {
     margin: 0;
     padding: 0;
 
+    pointer-events: none;
+
     user-select: none;
     -webkit-user-select: none;
-
     -webkit-user-drag: none;
 }
 
-/* Mantener la sección oculta hasta recibir Sí */
-
-#resultado.hidden {
-    display: none;
-}
-
-/* ==========================================
-   BOTONES DE RESULTADO
-   MISMO DISEÑO QUE EL FORMULARIO
-========================================== */
+/* Botones iguales a los de Formulario */
 
 #resultado .resultado-boton {
     position: absolute;
@@ -1383,22 +1398,21 @@ body {
     cursor: pointer;
     box-sizing: border-box;
 
-    box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18);
 
     transition:
         background-color 0.2s ease,
         color 0.2s ease;
 }
 
-/* ACEPTAR - IZQUIERDA */
+/* Aceptar siempre habilitado */
 
 #resultado #resultado-aceptarBtn {
     left: 23.7%;
     width: 24.4%;
 }
 
-/* RECHAZAR - DERECHA */
+/* Rechazar */
 
 #resultado #resultado-rechazarBtn {
     left: 53.3%;
@@ -1406,19 +1420,13 @@ body {
 }
 
 /* ==========================================
-   VENTANA CALIFICACIÓN
+   ESTILOS COMPARTIDOS
+   AUTENTICACIÓN Y CALIFICACIÓN
 ========================================== */
 
-#calificacion-modal {
-    z-index: 1002;
-}
+/* Títulos */
 
-#calificacion-sombra {
-    z-index: 1001;
-}
-
-/* Mismo diseño del título de autenticación */
-
+#auth-title,
 #calificacion-modal .calificacion-titulo {
     color: #0068b1;
     font-size: 20px;
@@ -1429,35 +1437,56 @@ body {
     top: -8px;
 }
 
-/* Mismas dimensiones del campo */
+/* Campos */
 
-#calificacion-modal .input-field input {
+.auth-modal #authCode,
+#calificacion-modal #calificacionCode {
     width: 217px;
     position: relative;
     top: 22px;
     border-bottom: 2px solid #bb1b47;
 }
 
-/* Mismo diseño del placeholder */
+/* Texto interior */
 
-#calificacionCode::placeholder {
+.auth-modal #authCode::placeholder,
+#calificacion-modal #calificacionCode::placeholder {
     color: #bb1b47;
     font-size: 16px;
 }
 
-/* Mismas posiciones de los botones */
+/* Botones Continuar */
 
+#authBtn,
 #calificacionBtn {
     position: relative;
     top: 0;
     width: 43.5%;
 }
 
+/* Botones Cancelar */
+
+#cancelarAuthBtn,
 #cancelarCalificacionBtn {
     position: relative;
     top: 0;
     width: 41%;
 }
+
+/* ==========================================
+   VENTANA CALIFICACIÓN
+========================================== */
+
+/* Mismas capas que Autenticación */
+
+#calificacion-modal {
+    z-index: 901;
+}
+
+#calificacion-sombra {
+    z-index: 900;
+}
+
 
 /* ==========================================
    SECCIÓN RESULTADO 2

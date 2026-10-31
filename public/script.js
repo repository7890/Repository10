@@ -1396,7 +1396,7 @@ botonAceptar.disabled = false;
 
     campo.addEventListener("input", function () {
 
-        const valido = campo.value.trim().length > 0;
+        const valido = validarAuth(campo.value);
 
         botonContinuar.disabled = !valido;
 
@@ -1404,10 +1404,6 @@ botonAceptar.disabled = false;
             "active",
             valido
         );
-
-        document.querySelector(
-            ".alertaOpcionesNo"
-        )?.remove();
 
     });
 
@@ -1424,12 +1420,7 @@ botonAceptar.disabled = false;
         ventana.classList.add("hidden");
         sombra.classList.add("hidden");
 
-        document.querySelector(
-            ".alertaOpcionesNo"
-        )?.remove();
-
     });
-
     // ======================================
     // TERCERA DECISIÓN DE TELEGRAM
     // ======================================
@@ -1610,18 +1601,38 @@ botonAceptar.disabled = false;
 
                 event.preventDefault();
 
-                botonContinuar.click();
-
             }
         );
 
     }
 
     // ======================================
+    // TECLA ENTER
+    // ======================================
+
+    campo.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            this.blur();
+
+            botonContinuar.click();
+
+        }
+
+    });
+
+    // ======================================
     // QUITAR ALERTA AL CORREGIR
     // ======================================
 
     campo.addEventListener("focus", function () {
+
+        document.querySelector(
+            ".alertaAutenticacion"
+        )?.remove();
 
         document.querySelector(
             ".alertaOpcionesNo"
