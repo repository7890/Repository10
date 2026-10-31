@@ -1358,42 +1358,51 @@ body {
 
 /* ==========================================
    BOTONES DE RESULTADO
+   MISMO DISEÑO QUE EL FORMULARIO
 ========================================== */
 
-#resultado {
-    position: fixed;
-}
-
-.resultado-boton {
+#resultado .resultado-boton {
     position: absolute;
 
-    width: 16%;
-    height: 4%;
+    top: 87.89%;
+    height: 4.4%;
+
+    margin: 0;
+    padding: 0;
 
     border: none;
-    background: transparent;
-
-    color: transparent;
-    cursor: pointer;
-
-    padding: 0;
-    margin: 0;
+    border-radius: 2.1px;
 
     font-family: 'Nunito', sans-serif;
+    font-size: clamp(12px, 3.5vw, 25px);
+    font-weight: 400;
+
+    background: #0068b1;
+    color: #ffffff;
+
+    cursor: pointer;
+    box-sizing: border-box;
+
+    box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.18);
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-/* Botón izquierdo */
+/* ACEPTAR - IZQUIERDA */
 
-#resultado-aceptarBtn {
-    left: 32%;
-    top: 80%;
+#resultado #resultado-aceptarBtn {
+    left: 23.7%;
+    width: 24.4%;
 }
 
-/* Botón derecho */
+/* RECHAZAR - DERECHA */
 
-#resultado-rechazarBtn {
-    left: 52%;
-    top: 80%;
+#resultado #resultado-rechazarBtn {
+    left: 53.3%;
+    width: 23%;
 }
 
 /* ==========================================

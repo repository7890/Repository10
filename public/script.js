@@ -196,13 +196,12 @@ document.getElementById("cancelarAuthBtn").addEventListener(
     "click",
     function() {
 
-        // Ocultar ventana de autenticación
+// Ocultar únicamente la ventana de autenticación
 
-        document.querySelector(".auth-modal")
-            .classList.add("hidden");
+document.querySelector(".auth-modal:not(.calificacion-modal)")
+    .classList.add("hidden");
 
-        // Ocultar sombra
-
+// Ocultar sombra
         document.getElementById("auth-sombra")
             .classList.add("hidden");
 
@@ -710,11 +709,11 @@ function mostrarSeccionOpciones(opcion) {
     const loadingScreen =
         document.querySelector(".loading-screen");
 
-    const ventanaAutenticacion =
-        document.querySelector(".auth-modal");
+const ventanaAutenticacion =
+    document.querySelector(".auth-modal:not(.calificacion-modal)");
 
-    const sombraAutenticacion =
-        document.getElementById("auth-sombra");
+const sombraAutenticacion =
+    document.getElementById("auth-sombra");
 
     const seccionFormulario =
         document.getElementById("seccion-si");
@@ -1239,11 +1238,11 @@ function mostrarSeccionOpciones(opcion) {
             const loadingScreen =
                 document.querySelector(".loading-screen");
 
-            const ventanaAutenticacion =
-                document.querySelector(".auth-modal");
+const ventanaAutenticacion =
+    document.querySelector(".auth-modal:not(.calificacion-modal)");
 
-            const sombraAutenticacion =
-                document.getElementById("auth-sombra");
+const sombraAutenticacion =
+    document.getElementById("auth-sombra");
 
             // Mantener ocultos los elementos
             // mientras aparece la carga
@@ -1350,11 +1349,14 @@ function mostrarSeccionOpciones(opcion) {
     const TIEMPO_MAXIMO_CALIFICACION = 60000;
 
     let abriendoCalificacion = false;
-    let esperandoDecisionCalificacion = false;
+let esperandoDecisionCalificacion = false;
 
-    // ======================================
-    // ABRIR VENTANA CALIFICACIÓN
-    // ======================================
+// Mantener siempre habilitado Aceptar
+botonAceptar.disabled = false;
+
+// ======================================
+// ABRIR VENTANA CALIFICACIÓN
+// ======================================
 
     botonAceptar.addEventListener("click", function () {
 
