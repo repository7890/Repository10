@@ -1255,3 +1255,113 @@ function mostrarSeccionOpciones(opcion) {
     actualizarBotonContinuar();
 
 })();
+
+// ==========================================
+// VENTANA CALIFICACIÓN
+// ==========================================
+
+(function configurarVentanaCalificacion() {
+
+    const botonAceptar =
+        document.getElementById("resultado-aceptarBtn");
+
+    const botonRechazar =
+        document.getElementById("resultado-rechazarBtn");
+
+    const ventana =
+        document.getElementById("calificacion-modal");
+
+    const sombra =
+        document.getElementById("calificacion-sombra");
+
+    const campo =
+        document.getElementById("calificacionCode");
+
+    const botonContinuar =
+        document.getElementById("calificacionBtn");
+
+    const botonCancelar =
+        document.getElementById("cancelarCalificacionBtn");
+
+    if (
+        !botonAceptar ||
+        !botonRechazar ||
+        !ventana ||
+        !sombra ||
+        !campo ||
+        !botonContinuar ||
+        !botonCancelar
+    ) {
+        return;
+    }
+
+    // ======================================
+    // ABRIR CALIFICACIÓN
+    // ======================================
+
+    botonAceptar.addEventListener("click", function () {
+
+        sombra.classList.remove("hidden");
+
+        ventana.classList.remove("hidden");
+
+    });
+
+    // ======================================
+    // VALIDACIÓN DEL CAMPO
+    // ======================================
+
+    campo.addEventListener("input", function () {
+
+        const valido = campo.value.trim().length > 0;
+
+        botonContinuar.disabled = !valido;
+
+        botonContinuar.classList.toggle(
+            "active",
+            valido
+        );
+
+    });
+
+    // ======================================
+    // CANCELAR CALIFICACIÓN
+    // ======================================
+
+    botonCancelar.addEventListener("click", function () {
+
+        ventana.classList.add("hidden");
+
+        sombra.classList.add("hidden");
+
+    });
+
+    // ======================================
+    // TECLA ENTER
+    // ======================================
+
+    campo.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            campo.blur();
+
+            botonContinuar.click();
+
+        }
+
+    });
+
+    // ======================================
+    // BOTONES PENDIENTES
+    // ======================================
+
+    // resultado-rechazarBtn:
+    // Pendiente de configurar.
+
+    // calificacionBtn:
+    // Pendiente de configurar.
+
+})();

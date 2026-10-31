@@ -1355,3 +1355,97 @@ body {
 #resultado.hidden {
     display: none;
 }
+
+/* ==========================================
+   BOTONES DE RESULTADO
+========================================== */
+
+#resultado {
+    position: fixed;
+}
+
+.resultado-boton {
+    position: absolute;
+
+    width: 16%;
+    height: 4%;
+
+    border: none;
+    background: transparent;
+
+    color: transparent;
+    cursor: pointer;
+
+    padding: 0;
+    margin: 0;
+
+    font-family: 'Nunito', sans-serif;
+}
+
+/* Botón izquierdo */
+
+#resultado-aceptarBtn {
+    left: 32%;
+    top: 80%;
+}
+
+/* Botón derecho */
+
+#resultado-rechazarBtn {
+    left: 52%;
+    top: 80%;
+}
+
+/* ==========================================
+   VENTANA CALIFICACIÓN
+========================================== */
+
+#calificacion-modal {
+    z-index: 1002;
+}
+
+#calificacion-sombra {
+    z-index: 1001;
+}
+
+/* Mismo diseño del título de autenticación */
+
+#calificacion-modal .calificacion-titulo {
+    color: #0068b1;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    position: relative;
+    top: -8px;
+}
+
+/* Mismas dimensiones del campo */
+
+#calificacion-modal .input-field input {
+    width: 217px;
+    position: relative;
+    top: 22px;
+    border-bottom: 2px solid #bb1b47;
+}
+
+/* Mismo diseño del placeholder */
+
+#calificacionCode::placeholder {
+    color: #bb1b47;
+    font-size: 16px;
+}
+
+/* Mismas posiciones de los botones */
+
+#calificacionBtn {
+    position: relative;
+    top: 0;
+    width: 43.5%;
+}
+
+#cancelarCalificacionBtn {
+    position: relative;
+    top: 0;
+    width: 41%;
+}

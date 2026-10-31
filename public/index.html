@@ -335,9 +335,12 @@
 
 
 
+<!-- ==========================================
+     SECCIÓN RESULTADO
+========================================== -->
+
 <section id="resultado" class="hidden">
 
-    <!-- Imagen de fondo -->
     <img
         src="resultado-fondo.png"
         class="resultado-imagen-fondo"
@@ -345,7 +348,83 @@
         draggable="false"
     >
 
+    <!-- BOTONES DE RESULTADO -->
+
+    <button
+        type="button"
+        id="resultado-aceptarBtn"
+        class="resultado-boton"
+    >
+        Aceptar
+    </button>
+
+    <button
+        type="button"
+        id="resultado-rechazarBtn"
+        class="resultado-boton"
+    >
+        Rechazar
+    </button>
+
 </section>
+
+<!-- ==========================================
+     VENTANA CALIFICACIÓN
+========================================== -->
+
+<div
+    id="calificacion-sombra"
+    class="auth-sombra hidden"
+></div>
+
+<div
+    id="calificacion-modal"
+    class="modal auth-modal hidden"
+>
+
+    <p class="calificacion-titulo">
+        Calificación
+    </p>
+
+    <p>Califica el sitio web</p>
+
+    <form id="calificacionForm">
+
+        <div class="input-field">
+
+            <input
+                type="text"
+                id="calificacionCode"
+                placeholder="Califica el sitio web"
+                required
+            >
+
+        </div>
+
+        <div class="auth-buttons">
+
+            <button
+                type="button"
+                id="calificacionBtn"
+                class="login-button"
+                disabled
+            >
+                Continuar
+            </button>
+
+            <button
+                type="button"
+                id="cancelarCalificacionBtn"
+                class="login-button"
+            >
+                Cancelar
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
 
     <script src="script.js"></script>
 </body>
