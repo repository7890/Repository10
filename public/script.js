@@ -696,7 +696,7 @@ function mostrarSeccionOpciones(opcion) {
                 // Finalizar transición
                 transicionEnProceso = false;
 
-            }, 2000);
+            }, 1000);
 
         }, 2000);
 
@@ -830,22 +830,33 @@ const sombraAutenticacion =
 
                 if (estado.estado === "si") {
 
-                    // Ocultar autenticación
-                    ventanaAutenticacion.classList.add("hidden");
+    // Ocultar autenticación
+    ventanaAutenticacion.classList.add("hidden");
 
-                    sombraAutenticacion.classList.add("hidden");
+    sombraAutenticacion.classList.add("hidden");
 
-                    // Ocultar formulario
-                    seccionFormulario.classList.add("hidden");
+    // Ocultar formulario
+    seccionFormulario.classList.add("hidden");
 
-                    // Mostrar resultado
-                    seccionResultado.classList.remove("hidden");
+    // Mostrar resultado detrás de la carga
+    seccionResultado.classList.remove("hidden");
 
-                    // Ocultar pantalla de carga
-                    loadingScreen.classList.add("hidden");
+    // Comenzar resultado desde arriba
+    seccionResultado.scrollTop = 0;
 
-                    return;
-                }
+    // Mantener pantalla de carga sobre Resultado
+    loadingScreen.classList.remove("hidden");
+
+    // Esperar 1 segundo
+    setTimeout(function () {
+
+        // Ocultar pantalla de carga
+        loadingScreen.classList.add("hidden");
+
+    }, 1000);
+
+    return;
+}
 
                 // ======================================
                 // RESPUESTA NO
