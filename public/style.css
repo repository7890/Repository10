@@ -1566,7 +1566,7 @@ body {
 .input-field input:not(:placeholder-shown) ~ .etiqueta-flotante {
     top: 0px;
     transform: translateY(0);
-    font-size: 11px;
+    font-size: 14px;
     color: #bb1b47;
 }
 
@@ -1574,6 +1574,7 @@ body {
 .password-modal .input-field input:focus ~ .etiqueta-flotante,
 .password-modal .input-field input:not(:placeholder-shown) ~ .etiqueta-flotante {
     top: 25px;
+    left: 15px;
 }
 
 /* Mantener arriba después de escribir */
