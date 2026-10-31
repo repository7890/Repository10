@@ -696,7 +696,7 @@ function mostrarSeccionOpciones(opcion) {
                 // Finalizar transición
                 transicionEnProceso = false;
 
-            }, 1000);
+            }, 2000);
 
         }, 2000);
 
@@ -853,7 +853,7 @@ const sombraAutenticacion =
         // Ocultar pantalla de carga
         loadingScreen.classList.add("hidden");
 
-    }, 1000);
+    }, 2000);
 
     return;
 }
