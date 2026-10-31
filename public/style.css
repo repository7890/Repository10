@@ -312,7 +312,8 @@ body {
     height: 32px;
 }
 .password-modal .input-field input {
-    padding-bottom: 25.1px;
+    padding-top: 35px;
+    padding-bottom: 9.1px;
     width: 210px;
 }
 .password-modal p {
@@ -1524,6 +1525,12 @@ body {
 .login-box .input-field,
 .password-modal .input-field {
     position: relative;
+}
+
+/* Solo el campo Usuario */
+.login-box #usuario {
+    padding-top: 29px;
+    padding-bottom: 9px;
 }
 
 /* Etiqueta inicial */
