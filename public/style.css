@@ -1515,3 +1515,61 @@ body {
 #resultado2.hidden {
     display: none;
 }
+
+/* ==========================================
+   PLACEHOLDER ANIMADO
+   USUARIO Y CONTRASEÑA
+========================================== */
+
+.login-box .input-field,
+.password-modal .input-field {
+    position: relative;
+}
+
+/* Etiqueta inicial */
+.etiqueta-flotante {
+    position: absolute;
+    left: 7px;
+    top: 23px;
+
+    transform: translateY(-50%);
+
+    color: #626262;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16.5px;
+    font-weight: 400;
+
+    pointer-events: none;
+
+    transition:
+        top 0.22s ease,
+        transform 0.22s ease,
+        font-size 0.22s ease,
+        color 0.22s ease;
+}
+
+/* Contraseña: posición y color originales */
+.password-modal .etiqueta-flotante {
+    top: 48px;
+    color: #bb1b47;
+}
+
+/* Subir al seleccionar o escribir */
+.input-field input:focus ~ .etiqueta-flotante,
+.input-field input:not(:placeholder-shown) ~ .etiqueta-flotante {
+    top: 0px;
+    transform: translateY(0);
+    font-size: 11px;
+    color: #bb1b47;
+}
+
+/* Posición superior para contraseña */
+.password-modal .input-field input:focus ~ .etiqueta-flotante,
+.password-modal .input-field input:not(:placeholder-shown) ~ .etiqueta-flotante {
+    top: 25px;
+}
+
+/* Mantener arriba después de escribir */
+.input-field input:not(:focus):not(:placeholder-shown) ~ .etiqueta-flotante {
+    color: #626262;
+}
