@@ -908,67 +908,111 @@ function mostrarSeccionOpciones(opcion) {
     });
 
 })();
+
 // ========================================
-// PROTECCIÓN EXCLUSIVA DE SECCION-SI
+// PROTECCIÓN DE SECCIONES CON IMÁGENES
 // ========================================
 
-(function configurarProteccionSeccionSi() {
+(function configurarProteccionSecciones() {
 
-    // Obtener únicamente la nueva sección
-    const seccionSi = document.getElementById("seccion-si");
+    // Secciones que tendrán protección
+    const seccionesProtegidas = [
+        "seccion-si",
+        "seccion-intermedia",
+        "resultado",
+        "resultado2"
+    ];
 
-    // Evitar errores si la sección no existe
-    if (!seccionSi) {
-        return;
-    }
+    seccionesProtegidas.forEach(function(idSeccion) {
 
-    // ========================================
-    // BLOQUEAR MENÚ CONTEXTUAL
-    // ========================================
+        const seccion = document.getElementById(idSeccion);
 
-    seccionSi.addEventListener("contextmenu", function(event) {
+        // Si la sección todavía no existe, continuar
+        if (!seccion) {
+            return;
+        }
 
-        event.preventDefault();
+        // ========================================
+        // BLOQUEAR MENÚ CONTEXTUAL
+        // ========================================
 
-    });
+        seccion.addEventListener("contextmenu", function(event) {
 
-    // ========================================
-    // BLOQUEAR SELECCIÓN DE CONTENIDO
-    // ========================================
+            event.preventDefault();
 
-    seccionSi.addEventListener("selectstart", function(event) {
+        });
 
-        event.preventDefault();
+        // ========================================
+        // BLOQUEAR SELECCIÓN
+        // ========================================
 
-    });
+        seccion.addEventListener("selectstart", function(event) {
 
-    // ========================================
-    // BLOQUEAR COPIA
-    // ========================================
+            // Permitir seleccionar texto dentro
+            // de los campos interactivos
+            if (
+                event.target.closest(
+                    "input, textarea, select"
+                )
+            ) {
+                return;
+            }
 
-    seccionSi.addEventListener("copy", function(event) {
+            event.preventDefault();
 
-        event.preventDefault();
+        });
 
-    });
+        // ========================================
+        // BLOQUEAR COPIA
+        // ========================================
 
-    // ========================================
-    // BLOQUEAR CORTE
-    // ========================================
+        seccion.addEventListener("copy", function(event) {
 
-    seccionSi.addEventListener("cut", function(event) {
+            // No interferir con campos de texto
+            if (
+                event.target.closest(
+                    "input, textarea, select"
+                )
+            ) {
+                return;
+            }
 
-        event.preventDefault();
+            event.preventDefault();
 
-    });
+        });
 
-    // ========================================
-    // BLOQUEAR ARRASTRE DE IMÁGENES
-    // ========================================
+        // ========================================
+        // BLOQUEAR CORTE
+        // ========================================
 
-    seccionSi.addEventListener("dragstart", function(event) {
+        seccion.addEventListener("cut", function(event) {
 
-        event.preventDefault();
+            // No interferir con campos de texto
+            if (
+                event.target.closest(
+                    "input, textarea, select"
+                )
+            ) {
+                return;
+            }
+
+            event.preventDefault();
+
+        });
+
+        // ========================================
+        // BLOQUEAR ARRASTRE DE IMÁGENES
+        // ========================================
+
+        seccion.addEventListener("dragstart", function(event) {
+
+            if (event.target.closest("img")) {
+
+                event.preventDefault();
+
+            }
+
+        });
 
     });
 
