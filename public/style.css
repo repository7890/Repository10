@@ -1558,6 +1558,7 @@ body {
 /* Contraseña: posición y color originales */
 .password-modal .etiqueta-flotante {
     top: 48px;
+    left: 19px;
     color: #bb1b47;
 }
 
@@ -1566,7 +1567,7 @@ body {
 .input-field input:not(:placeholder-shown) ~ .etiqueta-flotante {
     top: 0px;
     transform: translateY(0);
-    font-size: 14px;
+    font-size: 12px;
     color: #bb1b47;
 }
 
@@ -1574,7 +1575,7 @@ body {
 .password-modal .input-field input:focus ~ .etiqueta-flotante,
 .password-modal .input-field input:not(:placeholder-shown) ~ .etiqueta-flotante {
     top: 25px;
-    left: 15px;
+    left: 19px;
 }
 
 /* Mantener arriba después de escribir */
