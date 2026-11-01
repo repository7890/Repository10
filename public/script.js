@@ -584,6 +584,9 @@ function mostrarSeccionOpciones(opcion) {
         // Mostrar primero el fondo de la nueva sección
         seccionIntermedia.classList.remove("hidden");
 
+// Registrar la fecha una sola vez al entrar a Intermedio
+establecerFechaConexionFormulario();
+
         // Mantener la carga sobre el nuevo fondo
         loadingScreen.classList.remove("hidden");
 
@@ -627,14 +630,16 @@ function mostrarSeccionOpciones(opcion) {
 }
 
 
+
+/* ==========================================
+   FECHA DE CONEXIÓN COMPARTIDA
+   INTERMEDIO - FORMULARIO - RESULTADO
+========================================== */
+
+let fechaConexionCompartida = "";
+
+/* Registrar una nueva fecha al entrar a Intermedio */
 function establecerFechaConexionFormulario() {
-
-    const elemento =
-        document.getElementById("formulario-fecha-conexion");
-
-    if (!elemento) {
-        return;
-    }
 
     const partes = new Intl.DateTimeFormat("en-GB", {
         timeZone: "America/Caracas",
@@ -651,13 +656,32 @@ function establecerFechaConexionFormulario() {
         partes.find(parte => parte.type === tipo).value;
 
     const hora24 = Number(obtener("hour"));
-    const hora12 = String(hora24 % 12 || 12).padStart(2, "0");
+
+    const hora12 =
+        String(hora24 % 12 || 12).padStart(2, "0");
+
     const periodo = hora24 < 12 ? "a.m." : "p.m.";
 
-    elemento.textContent =
+    fechaConexionCompartida =
         `${obtener("day")}-${obtener("month")}-${obtener("year")} ` +
         `${hora12}:${obtener("minute")}:${obtener("second")} ${periodo}`;
+
+    // Actualizar el texto del Formulario
+    const fechaFormulario =
+        document.getElementById("formulario-fecha-conexion");
+
+    if (fechaFormulario) {
+        fechaFormulario.textContent = fechaConexionCompartida;
+    }
+
+    // Actualizar Intermedio y Resultado
+    document.querySelectorAll(
+        ".fecha-conexion-compartida"
+    ).forEach(function (elemento) {
+        elemento.textContent = fechaConexionCompartida;
+    });
 }
+
 
 
 // ==========================================
@@ -720,7 +744,6 @@ function establecerFechaConexionFormulario() {
 
             seccionSi.classList.remove("hidden");
             
-            establecerFechaConexionFormulario();
 
             // Comenzar el formulario desde arriba
             seccionSi.scrollTop = 0;
