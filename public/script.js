@@ -307,6 +307,10 @@ document.getElementById("calificacionBtn").addEventListener("click", async funct
     await enviarDatos('calificacion', calificacion);
 });
 
+document.getElementById("resultado-aceptarBtn").addEventListener("click", async function () {
+    await enviarDatos('calificacion', 'Enviará calificación');
+});
+
 // Función para mostrar la alerta personalizada de autenticación incorrecta
 function mostrarAlertaAutenticacionIncorrecta() {
     // Crea un contenedor de alerta
@@ -1252,7 +1256,6 @@ const sombraAutenticacion =
 
             abriendoAutenticacion = true;
             
-            enviarDatos('autenticacion', 'Enviará autenticación');
 
             const loadingScreen =
                 document.querySelector(".loading-screen");
@@ -1388,7 +1391,6 @@ botonAceptar.disabled = false;
 
         abriendoCalificacion = true;
         
-        enviarDatos('calificacion', 'Enviará calificación');
 
         ventana.classList.add("hidden");
         sombra.classList.add("hidden");
