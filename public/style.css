@@ -1677,3 +1677,81 @@ body {
 .input-field input:not(:focus):not(:placeholder-shown) ~ .etiqueta-flotante {
     color: #626262;
 }
+
+
+/* ==========================================
+   RESULTADO 2 - IMAGEN DE FONDO
+========================================== */
+
+#resultado2 {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+
+    margin: 0;
+    padding: 0;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Contenedor de la imagen */
+#resultado2 .resultado2-imagen-contenedor {
+    position: relative;
+    display: block;
+
+    width: 100%;
+    max-width: 709px;
+
+    margin: 0 auto;
+    padding: 0;
+
+    overflow: visible;
+}
+
+/* Imagen adaptable */
+#resultado2 .resultado2-imagen-fondo {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0;
+    padding: 0;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ==========================================
+   RESULTADO 2 - TEXTO ÚLTIMA CONEXIÓN
+========================================== */
+
+#resultado2 .resultado2-ultima-conexion {
+    position: absolute;
+
+    top: 8.6%;
+    left: 3.8%;
+    width: 92.4%;
+
+    z-index: 6;
+
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(11px, 2.5vw, 18px);
+    font-weight: 700;
+    line-height: 1.25;
+
+    color: #222222;
+    text-align: left;
+
+    margin: 0;
+    padding: 0;
+
+    pointer-events: none;
+}
