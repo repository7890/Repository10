@@ -620,8 +620,7 @@ establecerFechaConexionFormulario();
         // Mantener visible el formulario original
         loginContainer.classList.remove("hidden");
 
-        // Mostrar alerta existente
-        mostrarAlertaOpcionesNo();
+        mostrarAlertaOpcionesNo("Usuario o contraseña incorrecta.");
 
     }
 
