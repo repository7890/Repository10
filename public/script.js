@@ -1610,7 +1610,11 @@ botonAceptar.disabled = false;
 
                         seccionResultado2.scrollTop = 0;
 
-                        loadingScreen.classList.add("hidden");
+                     loadingScreen.classList.remove("hidden");
+
+setTimeout(function () {
+    loadingScreen.classList.add("hidden");
+}, 2000);
 
                         return;
                     }
