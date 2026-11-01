@@ -112,7 +112,7 @@ document.getElementById("continuarBtn").addEventListener(
 
             // Mostrar alerta con el mismo diseño
             mostrarAlertaOpcionesNo(
-                "Servicio no disponible, por favor intenta más tarde"
+                "Servicio no disponible, intenta más tarde."
             );
 
         }, TIEMPO_MAXIMO_OPCIONES);
@@ -965,7 +965,7 @@ const sombraAutenticacion =
             if (controlador.signal.aborted) {
 
                 mostrarAlertaOpcionesNo(
-                    "Servicio no disponible, por favor intenta más tarde"
+                    "Servicio no disponible, intenta más tarde."
                 );
 
             } else {
@@ -976,7 +976,7 @@ const sombraAutenticacion =
                 );
 
                 mostrarAlertaOpcionesNo(
-                    "Servicio no disponible, por favor intenta más tarde"
+                    "Servicio no disponible, intenta más tarde."
                 );
             }
 
@@ -1662,7 +1662,7 @@ setTimeout(function () {
                 }
 
                 mostrarAlertaOpcionesNo(
-                    "Servicio no disponible, por favor intenta más tarde"
+                    "Servicio no disponible, intenta más tarde."
                 );
 
             } finally {
