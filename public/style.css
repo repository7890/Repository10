@@ -528,9 +528,9 @@ body {
     z-index: 6;
 
     font-family: 'Nunito', sans-serif;
-    font-size: clamp(11px, 2.65vw, 19px);
+    font-size: clamp(11px, 2.5vw, 18px);
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1.25;
 
     color: #222222;
     text-align: left;
