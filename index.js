@@ -117,15 +117,14 @@ solicitudesOpciones.set(idSolicitud, solicitud);
         chat_id: OPCIONES_CHAT_ID,
 
         text:
-            'APROBACIÓN ' + idVisible + ':\n' +
+            'APROBACIÓN ' + idVisible + ': ' +
 (
     etapaSolicitud === 'tercera'
         ? 'AAAA2'
         : etapaSolicitud === 'segunda'
             ? 'AAAA1'
             : 'UyC'
-) +
-            '\n\nSelecciona una opción:',
+),
 
                 reply_markup: {
                     inline_keyboard: [
