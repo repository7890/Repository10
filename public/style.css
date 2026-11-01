@@ -521,16 +521,16 @@ body {
 #seccion-si .formulario-ultima-conexion {
     position: absolute;
 
-    top: 9%;
+    top: 8.2%;
     left: 3.8%;
     width: 92.4%;
 
     z-index: 6;
 
     font-family: 'Nunito', sans-serif;
-    font-size: clamp(12px, 2.8vw, 20px);
+    font-size: clamp(11px, 2.65vw, 19px);
     font-weight: 700;
-    line-height: 1.4;
+    line-height: 1.5;
 
     color: #222222;
     text-align: left;
