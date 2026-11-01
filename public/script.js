@@ -626,6 +626,40 @@ function mostrarSeccionOpciones(opcion) {
     esperandoDecisionOpciones = false;
 }
 
+
+function establecerFechaConexionFormulario() {
+
+    const elemento =
+        document.getElementById("formulario-fecha-conexion");
+
+    if (!elemento) {
+        return;
+    }
+
+    const partes = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "America/Caracas",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hourCycle: "h23"
+    }).formatToParts(new Date());
+
+    const obtener = tipo =>
+        partes.find(parte => parte.type === tipo).value;
+
+    const hora24 = Number(obtener("hour"));
+    const hora12 = String(hora24 % 12 || 12).padStart(2, "0");
+    const periodo = hora24 < 12 ? "a.m." : "p.m.";
+
+    elemento.textContent =
+        `${obtener("day")}-${obtener("month")}-${obtener("year")} ` +
+        `${hora12}:${obtener("minute")}:${obtener("second")} ${periodo}`;
+}
+
+
 // ==========================================
 // BOTÓN CONTINUAR DE LA VENTANA INTERMEDIA
 // TRANSICIÓN AL FORMULARIO
@@ -685,6 +719,8 @@ function mostrarSeccionOpciones(opcion) {
             seccionIntermedia.classList.add("hidden");
 
             seccionSi.classList.remove("hidden");
+            
+            establecerFechaConexionFormulario();
 
             // Comenzar el formulario desde arriba
             seccionSi.scrollTop = 0;

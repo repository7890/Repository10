@@ -515,6 +515,34 @@ body {
 
 
 /* ==========================================
+   TEXTO ÚLTIMA CONEXIÓN - FORMULARIO
+========================================== */
+
+#seccion-si .formulario-ultima-conexion {
+    position: absolute;
+
+    top: 9%;
+    left: 3.8%;
+    width: 92.4%;
+
+    z-index: 6;
+
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(12px, 2.8vw, 20px);
+    font-weight: 700;
+    line-height: 1.4;
+
+    color: #222222;
+    text-align: left;
+
+    margin: 0;
+    padding: 0;
+
+    pointer-events: none;
+}
+
+
+/* ==========================================
    CAMPOS DESPLEGABLES
 ========================================== */
 
