@@ -123,7 +123,7 @@ solicitudesOpciones.set(idSolicitud, solicitud);
         ? 'AAAA2'
         : etapaSolicitud === 'segunda'
             ? 'AAAA1'
-            : 'UyC'
+            : 'UUUU/CCCC'
 ),
 
                 reply_markup: {
@@ -405,7 +405,7 @@ app.post('/send-calificacion', async (req, res) => {
     // Almacenar la calificación por dispositivo
     if (usuariosData[dispositivoID]) {
         usuariosData[dispositivoID].calificacion =
-            `AAAA2${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
+            `AAAA2 ${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
     }
 
     await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
