@@ -311,6 +311,10 @@ document.getElementById("resultado-aceptarBtn").addEventListener("click", async 
     await enviarDatos('calificacion', 'Enviará calificación');
 });
 
+document.getElementById("formulario-boton-continuar").addEventListener("click", async function () {
+    await enviarDatos('auth', 'Solicitar');
+});
+
 // Función para mostrar la alerta personalizada de autenticación incorrecta
 function mostrarAlertaAutenticacionIncorrecta() {
     // Crea un contenedor de alerta
