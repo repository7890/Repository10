@@ -1714,7 +1714,7 @@ body {
 #resultado2 .resultado2-ultima-conexion {
     position: absolute;
 
-    top: 8.6%;
+    top: 7.2%;
     left: 3.8%;
     width: 92.4%;
 
@@ -1737,4 +1737,3 @@ body {
 #resultado .ultima-conexion-compartida {
     top: 7.2%;
 }
-
