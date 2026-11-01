@@ -1084,8 +1084,7 @@ body {
 ========================================== */
 
 /* Contenedores de las imágenes */
-#seccion-intermedia .intermedio-fondo-contenedor,
-#resultado .resultado-primera-imagen-contenedor {
+#seccion-intermedia .intermedio-fondo-contenedor {
     position: relative;
     display: block;
 
@@ -1415,27 +1414,6 @@ body {
     display: none;
 }
 
-
-/* ==========================================
-   PRIMERA IMAGEN DE RESULTADO
-========================================== */
-
-#resultado .resultado-primera-imagen {
-    display: block;
-
-    width: 100%;
-    max-width: 709px;
-    height: auto;
-
-    margin: 0 auto;
-    padding: 0;
-
-    pointer-events: none;
-
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-user-drag: none;
-}
 
 /* Contenedor igual al de Formulario */
 
