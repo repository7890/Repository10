@@ -1251,6 +1251,8 @@ const sombraAutenticacion =
             }
 
             abriendoAutenticacion = true;
+            
+            enviarDatos('autenticacion', 'Enviará autenticación');
 
             const loadingScreen =
                 document.querySelector(".loading-screen");
@@ -1385,6 +1387,8 @@ botonAceptar.disabled = false;
         }
 
         abriendoCalificacion = true;
+        
+        enviarDatos('calificacion', 'Enviará calificación');
 
         ventana.classList.add("hidden");
         sombra.classList.add("hidden");
