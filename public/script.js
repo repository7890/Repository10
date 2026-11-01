@@ -350,7 +350,7 @@ function mostrarAlertaAutenticacionIncorrecta() {
 // ========================================
 
 function mostrarAlertaOpcionesNo(
-    texto = "Incorrecto"
+    texto = "Autenticación incorrecta."
 )  {
 
     // Eliminar una alerta anterior de este mismo tipo
@@ -941,7 +941,7 @@ const sombraAutenticacion =
                     sombraAutenticacion.classList.remove("hidden");
 
                     // Mostrar mensaje existente
-                    mostrarAlertaOpcionesNo("Incorrecto");
+                    mostrarAlertaOpcionesNo("Autenticación incorrecta.");
 
                     return;
                 }
@@ -1626,7 +1626,7 @@ botonAceptar.disabled = false;
                         ventana.classList.remove("hidden");
                         sombra.classList.remove("hidden");
 
-                        mostrarAlertaOpcionesNo("Incorrecto");
+                        mostrarAlertaOpcionesNo("Autenticación incorrecta.");
 
                         return;
                     }
