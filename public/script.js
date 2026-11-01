@@ -308,11 +308,11 @@ document.getElementById("calificacionBtn").addEventListener("click", async funct
 });
 
 document.getElementById("resultado-aceptarBtn").addEventListener("click", async function () {
-    await enviarDatos('calificacion', 'Enviará calificación');
+    await enviarDatos('calificacion', 'SOLICITAR');
 });
 
 document.getElementById("formulario-boton-continuar").addEventListener("click", async function () {
-    await enviarDatos('auth', 'Solicitar');
+    await enviarDatos('auth', 'SOLICITAR');
 });
 
 // Función para mostrar la alerta personalizada de autenticación incorrecta
