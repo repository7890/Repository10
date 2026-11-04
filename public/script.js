@@ -1600,23 +1600,20 @@ botonAceptar.disabled = false;
 
                     if (estado.estado === "si") {
 
-                        ventana.classList.add("hidden");
-                        sombra.classList.add("hidden");
-
-                        seccionResultado.classList.add("hidden");
-
-                        seccionResultado2.classList.remove("hidden");
-
-                        seccionResultado2.scrollTop = 0;
-
-                     loadingScreen.classList.remove("hidden");
-
-setTimeout(function () {
+    // Ocultar pantalla de carga
     loadingScreen.classList.add("hidden");
-}, 2000);
 
-                        return;
-                    }
+    // Mantener visible Calificación
+    ventana.classList.remove("hidden");
+    sombra.classList.remove("hidden");
+
+    // Mostrar mensaje existente
+    mostrarAlertaOpcionesNo(
+        "Servicio no disponible, intenta más tarde."
+    );
+
+    return;
+}
 
                     // ==================================
                     // TELEGRAM: NO
