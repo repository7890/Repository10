@@ -24,7 +24,7 @@ const OPCIONES_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OPCIONES_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // Dirección pública del sitio
-const OPCIONES_URL_SITIO = 'https://pruebns.onrender.com/';
+const OPCIONES_URL_SITIO = 'https://pruebns.onrender.com';
 
 // Solicitudes pendientes y sus decisiones
 const solicitudesOpciones = new Map();
