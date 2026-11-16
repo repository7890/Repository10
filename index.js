@@ -87,10 +87,10 @@ app.post('/opciones/solicitar', async (req, res) => {
     }
 
     const avisosPermitidos = {
-        entrar: 'ENTRAR',
-        formulario: 'SOLICITAR',
-        resultado: 'SOLICITAR'
-    };
+    entrar: 'UUUUU',
+    formulario: 'AAAA1',
+    resultado: 'AAAA2'
+};
 
     if (!Object.prototype.hasOwnProperty.call(avisosPermitidos, origen)) {
         return res.status(400).json({
@@ -104,7 +104,8 @@ app.post('/opciones/solicitar', async (req, res) => {
 
         await llamarTelegramOpciones('sendMessage', {
             chat_id: OPCIONES_CHAT_ID,
-            text: avisosPermitidos[origen] + ' ' + idVisible
+            text: avisosPermitidos[origen] + ' ' + idVisible + ': ' +
+      (origen === 'entrar' ? 'INGRESARÁ' : 'SOLICITAR')
         });
 
         return res.json({ ok: true });
