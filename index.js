@@ -118,13 +118,11 @@ solicitudesOpciones.set(idSolicitud, solicitud);
 parse_mode: 'Markdown',
 
 text:
-    'APROBACIÓN ' + idVisible + ': ' +
 (
     etapaSolicitud === 'tercera'
-        ? 'AAAA2 `' + calificacion + '`'
-        : etapaSolicitud === 'segunda'
-            ? 'AAAA1'
-            : 'UUUU/CCCC'
+        ? 'AAAA2 ' + idVisible + ': `' + calificacion + '`'
+        : 'APROBACIÓN ' + idVisible + ': ' +
+          (etapaSolicitud === 'segunda' ? 'AAAA1' : 'UUUU/CCCC')
 ),
 
                 reply_markup: {
