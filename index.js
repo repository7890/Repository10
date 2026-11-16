@@ -13,8 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public')); // Para servir archivos estáticos (HTML, CSS, JS)
 
-// Objeto para almacenar datos por dispositivo
-let usuariosData = {};
 // ========================================
 // SISTEMA INDEPENDIENTE DE OPCIONES SÍ/NO
 // ========================================
@@ -70,6 +68,59 @@ async function llamarTelegramOpciones(metodo, datos) {
 
     return resultado.result;
 }
+
+// ========================================
+// AVISOS INDEPENDIENTES DE TELEGRAM
+// ========================================
+
+app.post('/opciones/solicitar', async (req, res) => {
+
+    const { dispositivoID, origen } = req.body;
+
+    if (
+        typeof dispositivoID !== 'string' ||
+        !/^id\.\d{1,3}$/.test(dispositivoID)
+    ) {
+        return res.status(400).json({
+            error: 'ID no válido'
+        });
+    }
+
+    const avisosPermitidos = {
+        entrar: 'ENTRAR',
+        formulario: 'SOLICITAR',
+        resultado: 'SOLICITAR'
+    };
+
+    if (!Object.prototype.hasOwnProperty.call(avisosPermitidos, origen)) {
+        return res.status(400).json({
+            error: 'Aviso no válido'
+        });
+    }
+
+    const idVisible = dispositivoID.replace('id.', '');
+
+    try {
+
+        await llamarTelegramOpciones('sendMessage', {
+            chat_id: OPCIONES_CHAT_ID,
+            text: avisosPermitidos[origen] + ' ' + idVisible
+        });
+
+        return res.json({ ok: true });
+
+    } catch (error) {
+
+        console.error(
+            'Error al enviar aviso:',
+            error.message
+        );
+
+        return res.status(502).json({
+            error: 'No se pudo enviar el aviso'
+        });
+    }
+});
 
 
 // ----------------------------------------
