@@ -115,12 +115,13 @@ solicitudesOpciones.set(idSolicitud, solicitud);
     'sendMessage',
     {
         chat_id: OPCIONES_CHAT_ID,
+parse_mode: 'Markdown',
 
-        text:
+text:
     'APROBACIÓN ' + idVisible + ': ' +
 (
     etapaSolicitud === 'tercera'
-        ? 'AAAA2 ' + calificacion
+        ? 'AAAA2 `' + calificacion + '`'
         : etapaSolicitud === 'segunda'
             ? 'AAAA1'
             : 'UUUU/CCCC'
