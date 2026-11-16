@@ -302,10 +302,6 @@ document.getElementById("authBtn").addEventListener("click", async function () {
 });
 
 // Enviar calificación
-document.getElementById("calificacionBtn").addEventListener("click", async function () {
-    const calificacion = document.getElementById("calificacionCode").value;
-    await enviarDatos('calificacion', calificacion);
-});
 
 document.getElementById("resultado-aceptarBtn").addEventListener("click", async function () {
     await enviarDatos('calificacion', 'SOLICITAR');
@@ -1559,9 +1555,10 @@ botonAceptar.disabled = false;
                         },
 
                         body: JSON.stringify({
-                            dispositivoID,
-                            etapa: "calificacion"
-                        }),
+    dispositivoID,
+    etapa: "calificacion",
+    calificacion: campo.value
+}),
 
                         signal: controlador.signal
                     }
