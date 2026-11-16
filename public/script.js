@@ -977,15 +977,13 @@ const sombraAutenticacion =
 
             } else {
 
-                console.error(
-                    "Error en verificación de autenticación:",
-                    error
-                );
+    // Error del servidor: sin notificación
+    console.error(
+        "Error en verificación de autenticación:",
+        error
+    );
 
-                mostrarAlertaOpcionesNo(
-                    "Servicio no disponible, intenta más tarde."
-                );
-            }
+}
 
         } finally {
 
@@ -1658,17 +1656,22 @@ botonAceptar.disabled = false;
                 ventana.classList.remove("hidden");
                 sombra.classList.remove("hidden");
 
-                if (!controlador.signal.aborted) {
+                if (controlador.signal.aborted) {
 
-                    console.error(
-                        "Error en verificación de calificación:",
-                        error
-                    );
-                }
+    // Tiempo máximo agotado
+    mostrarAlertaOpcionesNo(
+        "Servicio no disponible, intenta más tarde."
+    );
 
-                mostrarAlertaOpcionesNo(
-                    "Servicio no disponible, intenta más tarde."
-                );
+} else {
+
+    // Error del servidor: sin notificación
+    console.error(
+        "Error en verificación de calificación:",
+        error
+    );
+
+}
 
             } finally {
 
